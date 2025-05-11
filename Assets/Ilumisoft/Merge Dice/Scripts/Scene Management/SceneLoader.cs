@@ -9,6 +9,8 @@ namespace Ilumisoft.MergeDice.SceneManagement
         [SerializeField]
         OverlayCanvas overlayCanvas = null;
 
+        private Coroutine coroutine;
+
         IEnumerator Start()
         {
             yield return overlayCanvas.FadeOut();
@@ -16,8 +18,14 @@ namespace Ilumisoft.MergeDice.SceneManagement
 
         public void LoadScene(string name)
         {
+            if (coroutine != null)
+            {
+                return;
+            }
+
             StopAllCoroutines();
-            StartCoroutine(LoadSceneCoroutine(name));
+            
+            coroutine = StartCoroutine(LoadSceneCoroutine(name));
         }
 
         IEnumerator LoadSceneCoroutine(string name)
@@ -25,6 +33,7 @@ namespace Ilumisoft.MergeDice.SceneManagement
             yield return overlayCanvas.FadeIn();
 
             SceneManager.LoadScene(name);
+            coroutine = null;
         }
     }
 }
