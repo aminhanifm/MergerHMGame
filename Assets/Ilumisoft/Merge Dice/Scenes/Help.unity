@@ -191,7 +191,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1.4
   m_Text: "RULES ARE SIMPLE:\n\nMERGE SAME ICONS AND LEVEL UP. \n\nARE YOU ABLE TO
-    MERGE 'HOUSE'?"
+    MERGE 'CABIN'?"
 --- !u!222 &28600789
 CanvasRenderer:
   m_ObjectHideFlags: 0
