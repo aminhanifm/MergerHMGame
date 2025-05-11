@@ -265,7 +265,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 17, y: 11}
+  m_Size: {x: 14.5, y: 11}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -545,9 +545,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccc71b6ae16a40849997b8de5b7c9240, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 7
+  width: 5
   height: 4
-  cellSize: 2
+  cellSize: 2.25
   gameTileFactory: {fileID: 319197097}
 --- !u!1 &331507993
 GameObject:
