@@ -2,6 +2,7 @@
 using Ilumisoft.MergeDice.Operations;
 using System.Collections;
 using UnityEngine;
+using System.Collections.Generic; // Add using directive for List
 
 namespace Ilumisoft.MergeDice
 {
@@ -20,6 +21,8 @@ namespace Ilumisoft.MergeDice
         ISpawner gameBoardSpawner;
 
         OperationQueue operations = new OperationQueue();
+
+        public bool unlimitedMode = false; // Make this public for access
 
         private void Awake()
         {
@@ -50,8 +53,26 @@ namespace Ilumisoft.MergeDice
             while (IsGameOver() == false)
             {
                 yield return new WaitForInput();
-
                 yield return operations.Execute();
+            }
+
+            // If unlimited mode is enabled, erase all tiles and restart the game loop
+            if (unlimitedMode)
+            {
+                // Copy to a list to avoid modifying collection during iteration
+                var tiles = new List<GameTile>(gameBoard.GameTiles);
+                foreach (var tile in tiles)
+                {
+                    if (tile != null && !tile.IsDestroyed)
+                        tile.Pop();
+                }
+                // Wait for all tiles to be destroyed
+                yield return new WaitForSeconds(1.1f);
+                // Refill the board
+                gameBoardSpawner.Spawn();
+                // Restart the game loop
+                yield return RunGame();
+                yield break;
             }
 
             yield return new WaitForSeconds(1);
