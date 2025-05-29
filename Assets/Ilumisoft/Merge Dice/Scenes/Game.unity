@@ -766,7 +766,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameBoard: {fileID: 319197098}
   lineRenderer: {fileID: 733048520}
-  unlimitedMode: 0
+  unlimitedMode: 1
 --- !u!1 &545598363
 GameObject:
   m_ObjectHideFlags: 0

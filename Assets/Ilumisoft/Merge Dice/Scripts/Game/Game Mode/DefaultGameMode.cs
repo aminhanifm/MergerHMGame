@@ -1,8 +1,9 @@
 ﻿using Ilumisoft.MergeDice.Events;
 using Ilumisoft.MergeDice.Operations;
+using Ilumisoft.MergeDice.Notifications; // Add this using directive for notifications
 using System.Collections;
 using UnityEngine;
-using System.Collections.Generic; // Add using directive for List
+using System.Collections.Generic;
 
 namespace Ilumisoft.MergeDice
 {
@@ -59,6 +60,12 @@ namespace Ilumisoft.MergeDice
             // If unlimited mode is enabled, erase all tiles and restart the game loop
             if (unlimitedMode)
             {
+                // Send notification to player
+                NotificationEvents.Send(new NotificationMessage("No moves left"));
+
+                // Add slight delay before starting to clear board
+                yield return new WaitForSeconds(1f);
+
                 // Copy to a list to avoid modifying collection during iteration
                 var tiles = new List<GameTile>(gameBoard.GameTiles);
                 foreach (var tile in tiles)
@@ -66,10 +73,20 @@ namespace Ilumisoft.MergeDice
                     if (tile != null && !tile.IsDestroyed)
                         tile.Pop();
                 }
-                // Wait for all tiles to be destroyed
+
+                // Wait for all tiles to be destroyed and animations to complete
                 yield return new WaitForSeconds(1.1f);
+
                 // Refill the board
                 gameBoardSpawner.Spawn();
+
+                // Wait for tile spawn animations to complete
+                yield return new WaitForTileMovement(gameBoard);
+                yield return new WaitForSeconds(0.5f); // Add slight delay after animations
+
+                // Send another notification
+                NotificationEvents.Send(new NotificationMessage("Board reset!"));
+
                 // Restart the game loop
                 yield return RunGame();
                 yield break;
