@@ -33,6 +33,9 @@ namespace Ilumisoft.MergeDice.Operations
                 yield break;
             }
 
+            // Progress quest for all selected tiles BEFORE leveling up/removing last
+            ProgressQuestForSelection();
+
             var last = selection.GetLast();
 
             ClearSelectionLine();
@@ -62,10 +65,10 @@ namespace Ilumisoft.MergeDice.Operations
             {
                 if (canLevelUp.HasMaxLevel)
                 {
-                    NotificationEvents.Send(new NotificationMessage()
-                    {
-                        Content = "Merged Cabin"
-                    });
+                    // NotificationEvents.Send(new NotificationMessage()
+                    // {
+                    //     Content = "Merged Cabin"
+                    // });
 
                     GameEvents<SFXEventType>.Trigger(SFXEventType.MergedSix);
                 }
@@ -111,6 +114,22 @@ namespace Ilumisoft.MergeDice.Operations
                 var gameTile = selection.Get(i);
 
                 gameTile.Pop();
+            }
+        }
+
+        private void ProgressQuestForSelection()
+        {
+            var questTracker = Object.FindFirstObjectByType<Survival.GameTileTracker>();
+            if (questTracker != null && !questTracker.ignoreTracking)
+            {
+                for (int i = 0; i < selection.Count; i++)
+                {
+                    var tile = selection.Get(i);
+                    if (tile is DiceGameTile diceTile)
+                    {
+                        questTracker.QuestSystem?.ProgressQuest(diceTile.CurrentLevel, 1);
+                    }
+                }
             }
         }
     }

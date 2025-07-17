@@ -6,10 +6,13 @@ namespace Ilumisoft.MergeDice
     {
         public List<GameTile> GameTiles { get; } = new List<GameTile>();
 
+        public static event System.Action<GameTile> OnGameTileRegistered;
+
         public void Register(GameTile gameTile)
         {
             gameTile.OnTileDestroyed += OnGameTileDestroy;
             GameTiles.Add(gameTile);
+            OnGameTileRegistered?.Invoke(gameTile);
         }
 
         public void Deregister(GameTile gameTile)

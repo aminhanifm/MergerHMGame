@@ -190,8 +190,14 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.4
-  m_Text: "RULES ARE SIMPLE:\n\nMERGE SAME ICONS AND LEVEL UP. \n\nARE YOU ABLE TO
-    MERGE 'CABIN'?"
+  m_Text: 'RULES ARE SIMPLE:
+
+
+    MERGE SAME ICONS AND FINISH QUEST
+
+
+    ARE YOU
+    ABLE TO SURVIVE DAY <b>10</b>?'
 --- !u!222 &28600789
 CanvasRenderer:
   m_ObjectHideFlags: 0
