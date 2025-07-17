@@ -2,6 +2,6 @@
 {
     public static class GameRules
     {
-        public static readonly int MinSelectionSize = 3;
+        public static readonly int MinSelectionSize = 2;
     }
 }

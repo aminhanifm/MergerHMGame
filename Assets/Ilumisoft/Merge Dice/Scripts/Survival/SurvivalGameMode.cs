@@ -25,16 +25,24 @@ namespace Ilumisoft.MergeDice.Survival
 
         public bool unlimitedMode = false; // allow unlimited resets
 
+        // Survival mode settings
+        [SerializeField] bool destructiveMerge = true; // Destroy tiles instead of leveling up
+        [SerializeField] int maxTileLevel = 6; // Limit tile levels for better gameplay (now matches your dice max)
+        [SerializeField] float lowLevelBias = 0.7f; // Probability to spawn lower levels
+
         private void Awake()
         {
             selection = new LineSelection(lineRenderer);
             gameBoardSpawner = new DefaultGameBoardSpawner(gameBoard);
             gameOverCheck = new DefaultGameOverCheck(gameBoard);
+            
+            // Setup operations - we'll modify the existing MergeSelection behavior
             operations.Clear();
             operations.Add(new ProcessInput(gameBoard, selection));
             operations.Add(new MergeSelection(gameBoard, selection));
             operations.Add(new ProcessVerticalMovement(gameBoard));
             operations.Add(new FillEmptyCells(gameBoard));
+            
             tileTracker = GameObject.FindAnyObjectByType<GameTileTracker>();
         }
 
@@ -53,6 +61,10 @@ namespace Ilumisoft.MergeDice.Survival
             Score.Reset();
             GameStats.Reset();
             gameBoardSpawner.Spawn();
+            
+            // Apply survival mode settings to initial tiles
+            ApplySurvivalSettingsToBoard();
+            
             questSystem.StartNewDay();
             survivalTimer.TimeLimit = 60;
             survivalTimer.StartTimer();
@@ -93,8 +105,13 @@ namespace Ilumisoft.MergeDice.Survival
 
                     // Wait for tiles to disappear
                     yield return new WaitForSeconds(1.1f);
+                    
                     // Refill board
                     gameBoardSpawner.Spawn();
+                    
+                    // Apply survival mode settings to new tiles
+                    ApplySurvivalSettingsToBoard();
+                    
                     // Wait for tile spawn animations
                     yield return new WaitForTileMovement(gameBoard);
                     yield return new WaitForSeconds(0.5f);
@@ -164,6 +181,76 @@ namespace Ilumisoft.MergeDice.Survival
         {
             // Game over logic here
             timesUp = true;
+        }
+
+        /// <summary>
+        /// Applies survival mode settings to all tiles on the board
+        /// </summary>
+        private void ApplySurvivalSettingsToBoard()
+        {
+            // Small delay to ensure all tiles are properly instantiated
+            StartCoroutine(ApplySurvivalSettingsDelayed());
+        }
+
+        private IEnumerator ApplySurvivalSettingsDelayed()
+        {
+            yield return new WaitForEndOfFrame();
+            
+            foreach (var tile in gameBoard.GameTiles)
+            {
+                if (tile is DiceGameTile diceTile && !diceTile.IsDestroyed)
+                {
+                    // Set strategic levels for better gameplay
+                    diceTile.CurrentLevel = GetStrategicLevel();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns a level that promotes good gameplay by favoring lower levels
+        /// </summary>
+        private int GetStrategicLevel()
+        {
+            // Get the actual maximum level from the dice system dynamically
+            int actualMaxLevel = GetDynamicMaxLevel();
+            
+            // Use weighted probability to favor lower levels
+            float randomValue = Random.value;
+            
+            if (randomValue < lowLevelBias)
+            {
+                // Heavily favor levels 0-1 for easy combinations
+                return Random.Range(0, 2);
+            }
+            else
+            {
+                // Occasionally spawn higher levels but respect the actual max level
+                return Random.Range(0, Mathf.Min(maxTileLevel + 1, actualMaxLevel + 1));
+            }
+        }
+
+        /// <summary>
+        /// Gets the actual maximum level from the dice system dynamically
+        /// </summary>
+        private int GetDynamicMaxLevel()
+        {
+            // Try to find a dice tile on the board to get the real max level
+            foreach (var tile in gameBoard.GameTiles)
+            {
+                if (tile is DiceGameTile diceTile && !diceTile.IsDestroyed)
+                {
+                    return diceTile.MaxLevel;
+                }
+            }
+            
+            // Use DiceLevelManager for max level
+            if (DiceLevelManager.Instance != null)
+            {
+                return DiceLevelManager.Instance.MaxLevel;
+            }
+            
+            // Final fallback: use the configured maxTileLevel
+            return maxTileLevel;
         }
     }
 }

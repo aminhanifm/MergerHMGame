@@ -61,6 +61,18 @@ namespace Ilumisoft.MergeDice.Operations
 
         private void LevelUp(GameTile gameTile)
         {
+            // Check if we're in survival mode for destructive merging
+            var survivalMode = Object.FindFirstObjectByType<Survival.SurvivalGameMode>();
+            
+            if (survivalMode != null)
+            {
+                // In survival mode, destroy the last tile instead of leveling up
+                gameTile.Pop();
+                selection.Remove(gameTile);
+                return;
+            }
+
+            // Standard level-up behavior for other game modes
             if (gameTile is ICanLevelUp canLevelUp)
             {
                 if (canLevelUp.HasMaxLevel)
@@ -91,7 +103,27 @@ namespace Ilumisoft.MergeDice.Operations
 
         private void IncreaseScore()
         {
-            Score.Add(new ScoreRevenue(selection).GetValue());
+            // Check if we're in survival mode for different scoring
+            var survivalMode = Object.FindFirstObjectByType<Survival.SurvivalGameMode>();
+            
+            if (survivalMode != null)
+            {
+                // In survival mode, score based on number of tiles merged
+                int baseScore = selection.Count * 10;
+                
+                // Bonus for larger merges
+                if (selection.Count >= 4)
+                    baseScore *= 2;
+                if (selection.Count >= 6)
+                    baseScore *= 2;
+
+                Score.Add(baseScore);
+            }
+            else
+            {
+                // Standard scoring for other game modes
+                Score.Add(new ScoreRevenue(selection).GetValue());
+            }
         }
 
         private void MoveSelected(Vector3 position)

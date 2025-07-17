@@ -19,3 +19,8 @@ MonoBehaviour:
     targetAmount: 8
   - tileLevel: 1
     targetAmount: 2
+  timeLimit: 0
+  priority: 0
+  canBeSkipped: 0
+  scoreReward: 100
+  timeBonus: 0

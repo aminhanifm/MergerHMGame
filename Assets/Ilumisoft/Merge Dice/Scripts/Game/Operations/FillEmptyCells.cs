@@ -56,7 +56,57 @@ namespace Ilumisoft.MergeDice.Operations
         {
             Vector3 position = grid.GetPosition(cell.x, cell.y);
 
-            gameTileFactory.Spawn(position);
+            var newTile = gameTileFactory.Spawn(position);
+            
+            // Apply survival mode settings if we're in survival mode
+            var survivalMode = Object.FindFirstObjectByType<Survival.SurvivalGameMode>();
+            if (survivalMode != null && newTile is DiceGameTile diceTile)
+            {
+                // Use survival-friendly level generation
+                diceTile.CurrentLevel = GetSurvivalRandomLevel();
+            }
+        }
+
+        /// <summary>
+        /// Returns a random level optimized for survival mode gameplay
+        /// </summary>
+        private int GetSurvivalRandomLevel()
+        {
+            // Get the actual maximum level dynamically
+            int actualMaxLevel = GetDynamicMaxLevel();
+            
+            // 70% chance for levels 0-1 (easy to combine)
+            if (Random.value < 0.7f)
+            {
+                return Random.Range(0, 2);
+            }
+            // 30% chance for higher levels but respect actual max
+            else
+            {
+                return Random.Range(2, Mathf.Min(6, actualMaxLevel + 1));
+            }
+        }
+
+        /// <summary>
+        /// Gets the actual maximum level from the dice system dynamically
+        /// </summary>
+        private int GetDynamicMaxLevel()
+        {
+            // Try to find a dice tile to get the real max level
+            var allTiles = Object.FindObjectsByType<DiceGameTile>(FindObjectsSortMode.None);
+            if (allTiles.Length > 0)
+            {
+                return allTiles[0].MaxLevel;
+            }
+            
+            // Use DiceLevelManager for max level
+            if (DiceLevelManager.Instance != null)
+            {
+                return DiceLevelManager.Instance.MaxLevel;
+            }
+            
+            // Final fallback
+            return 6;
         }
     }
 }

@@ -538,7 +538,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 14.5, y: 11}
+  m_Size: {x: 17.5, y: 11}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1091,7 +1091,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccc71b6ae16a40849997b8de5b7c9240, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 5
+  width: 7
   height: 4
   cellSize: 2.25
   gameTileFactory: {fileID: 319197097}
@@ -1526,6 +1526,9 @@ MonoBehaviour:
   survivalTimer: {fileID: 118565289}
   questSystem: {fileID: 1848212810}
   unlimitedMode: 1
+  destructiveMerge: 1
+  maxTileLevel: 5
+  lowLevelBias: 0.5
 --- !u!1 &545598363
 GameObject:
   m_ObjectHideFlags: 0
@@ -6260,6 +6263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   questSystem: {fileID: 1848212810}
+  ignoreTracking: 0
 --- !u!1 &2129117663
 GameObject:
   m_ObjectHideFlags: 0

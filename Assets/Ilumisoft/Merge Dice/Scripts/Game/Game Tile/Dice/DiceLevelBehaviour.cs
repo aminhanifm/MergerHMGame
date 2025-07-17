@@ -8,16 +8,41 @@ namespace Ilumisoft.MergeDice
     {
         int currentLevel = 0;
 
-        [SerializeField]
-        List<DiceLevel> diceLevels = new List<DiceLevel>();
-
-        public override int MaxLevel => diceLevels.Count - 1;
+        public override int MaxLevel => DiceLevelManager.Instance != null ? DiceLevelManager.Instance.MaxLevel : 5;
 
         public override UnityAction OnLevelChanged { get; set; }
 
         private void Start()
         {
-            CurrentLevel = Random.Range(0, GameStats.MaxReachedLevel + 1);
+            // Check if we're in survival mode for better tile distribution
+            var survivalMode = FindFirstObjectByType<Survival.SurvivalGameMode>();
+            if (survivalMode != null)
+            {
+                // Use survival-friendly random generation
+                CurrentLevel = GetSurvivalRandomLevel();
+            }
+            else
+            {
+                // Use standard random generation
+                CurrentLevel = Random.Range(0, GameStats.MaxReachedLevel + 1);
+            }
+        }
+
+        /// <summary>
+        /// Returns a random level optimized for survival mode gameplay
+        /// </summary>
+        private int GetSurvivalRandomLevel()
+        {
+            // 70% chance for levels 0-1 (easy to combine)
+            if (Random.value < 0.7f)
+            {
+                return Random.Range(0, 2);
+            }
+            // 30% chance for higher levels but respect the actual MaxLevel
+            else
+            {
+                return Random.Range(2, MaxLevel + 1);
+            }
         }
 
         public override int CurrentLevel
@@ -44,7 +69,9 @@ namespace Ilumisoft.MergeDice
         {
             get
             {
-                return diceLevels[currentLevel].Color;
+                return DiceLevelManager.Instance != null 
+                    ? DiceLevelManager.Instance.GetLevelColor(currentLevel) 
+                    : Color.white;
             }
         }
 
@@ -52,7 +79,9 @@ namespace Ilumisoft.MergeDice
         {
             get
             {
-                return diceLevels[currentLevel].overlay;
+                return DiceLevelManager.Instance != null 
+                    ? DiceLevelManager.Instance.GetLevelOverlay(currentLevel) 
+                    : null;
             }
         }
     }

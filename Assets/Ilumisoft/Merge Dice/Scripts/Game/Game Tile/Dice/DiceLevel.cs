@@ -4,7 +4,7 @@ namespace Ilumisoft.MergeDice
 {
 #pragma warning disable 0649
     [System.Serializable]
-    struct DiceLevel
+    public struct DiceLevel
     {
         public Color Color;
         public Sprite overlay;
