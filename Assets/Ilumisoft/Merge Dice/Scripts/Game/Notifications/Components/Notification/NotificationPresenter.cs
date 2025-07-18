@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace Ilumisoft.MergeDice.Notifications
 {
@@ -10,7 +11,7 @@ namespace Ilumisoft.MergeDice.Notifications
         Canvas canvas = null;
 
         [SerializeField]
-        Text textComponent = null;
+        TMP_Text textComponent = null;
 
         NotificationBase notificationBase = null;
 
@@ -27,7 +28,7 @@ namespace Ilumisoft.MergeDice.Notifications
         private void Reset()
         {
             canvas = GetComponentInChildren<Canvas>();
-            textComponent = GetComponentInChildren<Text>();
+            textComponent = GetComponentInChildren<TMP_Text>();
         }
 
         private void OnEnable()

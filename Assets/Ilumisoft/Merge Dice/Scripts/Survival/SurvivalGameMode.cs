@@ -19,6 +19,7 @@ namespace Ilumisoft.MergeDice.Survival
         OperationQueue operations = new OperationQueue();
         bool questCompleted = false;
         bool timesUp = false;
+        bool waitingForNextDay = false; // Add flag for waiting state
         GameTileTracker tileTracker; // Add tracker reference
         ISpawner gameBoardSpawner;
         IGameOverCheck gameOverCheck;
@@ -53,6 +54,13 @@ namespace Ilumisoft.MergeDice.Survival
                 questCompleted = false;
             };
 
+            questSystem.OnQuestCompleted += OnQuestCompleted;
+            questSystem.OnNewDayStarted += OnNewDayStarted;
+            
+            // Subscribe to quest reward events
+            questSystem.OnScoreReward += OnScoreReward;
+            questSystem.OnTimeBonus += OnTimeBonus;
+
             survivalTimer.OnTimerEnd += OnTimerEnd;
         }
 
@@ -66,8 +74,15 @@ namespace Ilumisoft.MergeDice.Survival
             ApplySurvivalSettingsToBoard();
             
             questSystem.StartNewDay();
-            survivalTimer.TimeLimit = 60;
-            survivalTimer.StartTimer();
+            
+            // Clear any accumulated time bonuses from previous games
+            survivalTimer.ClearAccumulatedBonus();
+            
+            // Use quest-specific time limit if available, otherwise default to 60 seconds
+            float timeLimit = questSystem.GetCurrentQuestTimeLimit();
+            if (timeLimit <= 0) timeLimit = 60f; // Default fallback
+            
+            survivalTimer.StartTimer(timeLimit);
             questCompleted = false;
             yield return null;
         }
@@ -86,7 +101,6 @@ namespace Ilumisoft.MergeDice.Survival
         {
             survivalTimer.OnTimerEnd += OnTimerEnd;
             questSystem.OnQuestCompleted += OnQuestCompleted;
-            bool waitingForNextDay = false;
             while (true)
             {
                 // Unlimited mode: reset board if no moves and not in waiting state
@@ -135,18 +149,24 @@ namespace Ilumisoft.MergeDice.Survival
                 {
                     Debug.Log("Quest completed! Waiting for next day.");
                     waitingForNextDay = true;
+                    
+                    // Wait for player to click Next button
                     while (waitingForNextDay)
                     {
                         yield return null;
-                        if (!questCompleted || questSystem.AllQuestsCompleted || timesUp)
+                        
+                        if (timesUp)
+                        {
+                            waitingForNextDay = false;
+                            questCompleted = false;
+                        }
+                        
+                        if (questSystem.AllQuestsCompleted)
                         {
                             waitingForNextDay = false;
                         }
-                        if (timesUp)
-                        {
-                            questCompleted = false; // Ensure exit
-                        }
                     }
+                    
                     if (timesUp)
                     {
                         Debug.Log("Time's up! Game over.");
@@ -166,6 +186,9 @@ namespace Ilumisoft.MergeDice.Survival
             survivalTimer.StopTimer();
             survivalTimer.OnTimerEnd -= OnTimerEnd;
             questSystem.OnQuestCompleted -= OnQuestCompleted;
+            questSystem.OnNewDayStarted -= OnNewDayStarted;
+            questSystem.OnScoreReward -= OnScoreReward;
+            questSystem.OnTimeBonus -= OnTimeBonus;
             GameEvents<UIEventType>.Trigger(UIEventType.GameOver);
             yield return null;
         }
@@ -181,6 +204,53 @@ namespace Ilumisoft.MergeDice.Survival
         {
             // Game over logic here
             timesUp = true;
+        }
+
+        void OnScoreReward(int scoreReward)
+        {
+            Score.Add(scoreReward);
+            NotificationEvents.Send(new NotificationMessage($"Quest Bonus: +{scoreReward} points!"));
+        }
+
+        void OnTimeBonus(float timeBonus)
+        {
+            survivalTimer.AddTimeBonusForNextQuest(timeBonus);
+            NotificationEvents.Send(new NotificationMessage($"Next Quest Bonus: +{timeBonus:F0} seconds!"));
+        }
+
+        void OnNewDayStarted()
+        {
+            // Restart timer for new quest with accumulated bonuses and quest-specific time limit
+            // Skip only if this is the very first call during game initialization
+            if (questCompleted || questSystem.Day > 1)
+            {
+                float timeLimit = questSystem.GetCurrentQuestTimeLimit();
+                if (timeLimit <= 0) timeLimit = 60f; // Default fallback
+                
+                // Read the bonus BEFORE calling StartTimer (which resets it to 0)
+                float bonusTime = survivalTimer.AccumulatedTimeBonus;
+                survivalTimer.StartTimer(timeLimit);
+                questCompleted = false;
+                waitingForNextDay = false; // Reset waiting flag
+                
+                Debug.Log($"New quest started with time limit: {timeLimit + bonusTime:F1} seconds (base: {timeLimit}, bonus: {bonusTime:F1})");
+            }
+        }
+
+        /// <summary>
+        /// Call this method when the player clicks the "Next" button in the UI
+        /// </summary>
+        public void OnNextButtonClicked()
+        {
+            if (waitingForNextDay && questCompleted)
+            {
+                // Progress to next day when player clicks Next
+                if (!questSystem.AllQuestsCompleted && !timesUp)
+                {
+                    questSystem.NextDay();
+                    Debug.Log($"Player clicked Next - Moving to Day {questSystem.Day}");
+                }
+            }
         }
 
         /// <summary>

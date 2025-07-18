@@ -1,6 +1,7 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
+using Ilumisoft.MergeDice;
 
 [System.Serializable]
 public class TileRequirement
@@ -21,11 +22,36 @@ public class TileRequirement
     [BoxGroup("Tile Requirement")]
     [ReadOnly]
     [ShowInInspector]
+    [PreviewField(55, ObjectFieldAlignment.Center)]
+    [PropertyTooltip("Visual preview of this dice level")]
+    [ShowIf("@GetLevelSprite() != null")]
+    public Sprite LevelPreview => GetLevelSprite();
+    
+    [BoxGroup("Tile Requirement")]
+    [ReadOnly]
+    [ShowInInspector]
+    [GUIColor("@GetLevelColor()")]
     [PropertyTooltip("Level info with dice visual properties")]
     public string LevelInfo => $"Level {tileLevel} - {targetAmount} required";
     
-    // TODO: Enable visual previews once Unity compiles DiceLevelManager
-    // Will show dice sprites and colors based on level
+    // Helper methods for Odin Inspector visual enhancements
+    private Sprite GetLevelSprite()
+    {
+        if (DiceLevelManager.Instance != null && DiceLevelManager.Instance.IsValidLevel(tileLevel))
+        {
+            return DiceLevelManager.Instance.GetLevelOverlay(tileLevel);
+        }
+        return null;
+    }
+    
+    private Color GetLevelColor()
+    {
+        if (DiceLevelManager.Instance != null && DiceLevelManager.Instance.IsValidLevel(tileLevel))
+        {
+            return DiceLevelManager.Instance.GetLevelColor(tileLevel);
+        }
+        return Color.white;
+    }
 }
 
 [CreateAssetMenu(fileName = "QuestData", menuName = "Survival/QuestData", order = 1)]

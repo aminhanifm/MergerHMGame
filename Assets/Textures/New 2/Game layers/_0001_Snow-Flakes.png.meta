@@ -1,0 +1,1157 @@
+fileFormatVersion: 2
+guid: 83795ed96191d0645997cbac3ed315d7
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3224684733927153447
+    second: _0001_Snow-Flakes_0
+  - first:
+      213: -6681957943864487118
+    second: _0001_Snow-Flakes_1
+  - first:
+      213: -1629404406985860951
+    second: _0001_Snow-Flakes_2
+  - first:
+      213: -1647031718641565650
+    second: _0001_Snow-Flakes_3
+  - first:
+      213: 5481739907723200267
+    second: _0001_Snow-Flakes_4
+  - first:
+      213: -6414276988339262072
+    second: _0001_Snow-Flakes_5
+  - first:
+      213: 8794681595324288342
+    second: _0001_Snow-Flakes_6
+  - first:
+      213: -4226906159060974995
+    second: _0001_Snow-Flakes_7
+  - first:
+      213: 653543575435233700
+    second: _0001_Snow-Flakes_8
+  - first:
+      213: 1062548140293213242
+    second: _0001_Snow-Flakes_9
+  - first:
+      213: -5261825046873565317
+    second: _0001_Snow-Flakes_10
+  - first:
+      213: 2530773868125963217
+    second: _0001_Snow-Flakes_11
+  - first:
+      213: -8826365334082242531
+    second: _0001_Snow-Flakes_12
+  - first:
+      213: -3060371761163455880
+    second: _0001_Snow-Flakes_13
+  - first:
+      213: 2928250013234614686
+    second: _0001_Snow-Flakes_14
+  - first:
+      213: 7843258632986302497
+    second: _0001_Snow-Flakes_15
+  - first:
+      213: 8198524210738826277
+    second: _0001_Snow-Flakes_16
+  - first:
+      213: 8040487515623299395
+    second: _0001_Snow-Flakes_17
+  - first:
+      213: -7532997221924314039
+    second: _0001_Snow-Flakes_18
+  - first:
+      213: 3971708055545725548
+    second: _0001_Snow-Flakes_19
+  - first:
+      213: 1831744629326546096
+    second: _0001_Snow-Flakes_20
+  - first:
+      213: -6714975365849298337
+    second: _0001_Snow-Flakes_21
+  - first:
+      213: -4844258096068539963
+    second: _0001_Snow-Flakes_22
+  - first:
+      213: 5092537291033450493
+    second: _0001_Snow-Flakes_23
+  - first:
+      213: -8136614538218393877
+    second: _0001_Snow-Flakes_24
+  - first:
+      213: 4421075087417338071
+    second: _0001_Snow-Flakes_25
+  - first:
+      213: 2240596206594268535
+    second: _0001_Snow-Flakes_26
+  - first:
+      213: -1997185590040693794
+    second: _0001_Snow-Flakes_27
+  - first:
+      213: 7158171042650996871
+    second: _0001_Snow-Flakes_28
+  - first:
+      213: -2912047177248971595
+    second: _0001_Snow-Flakes_29
+  - first:
+      213: 6509766146531577468
+    second: _0001_Snow-Flakes_30
+  - first:
+      213: 3639409952811223180
+    second: _0001_Snow-Flakes_31
+  - first:
+      213: -8417221524321649331
+    second: _0001_Snow-Flakes_32
+  - first:
+      213: -4660001742747164284
+    second: _0001_Snow-Flakes_33
+  - first:
+      213: 5594534134601003068
+    second: _0001_Snow-Flakes_34
+  - first:
+      213: 4020678048327668108
+    second: _0001_Snow-Flakes_35
+  - first:
+      213: -2957872738511894191
+    second: _0001_Snow-Flakes_36
+  - first:
+      213: 858336805579601678
+    second: _0001_Snow-Flakes_37
+  - first:
+      213: -5323510021235401612
+    second: _0001_Snow-Flakes_38
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_0
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 1407
+        width: 31
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d0a5a1d15e9f33d0800000000000000
+      internalID: -3224684733927153447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_1
+      rect:
+        serializedVersion: 2
+        x: 614
+        y: 1316
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2339bdf07aae443a0800000000000000
+      internalID: -6681957943864487118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_2
+      rect:
+        serializedVersion: 2
+        x: 1115
+        y: 1346
+        width: 32
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a8d62623513369e0800000000000000
+      internalID: -1629404406985860951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_3
+      rect:
+        serializedVersion: 2
+        x: 1267
+        y: 1299
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e208194d0619429e0800000000000000
+      internalID: -1647031718641565650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_4
+      rect:
+        serializedVersion: 2
+        x: 1569
+        y: 1246
+        width: 28
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b078cee076d031c40800000000000000
+      internalID: 5481739907723200267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_5
+      rect:
+        serializedVersion: 2
+        x: 1758
+        y: 1192
+        width: 49
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88d631b3019ebf6a0800000000000000
+      internalID: -6414276988339262072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_6
+      rect:
+        serializedVersion: 2
+        x: 251
+        y: 1137
+        width: 48
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65d48f1905cfc0a70800000000000000
+      internalID: 8794681595324288342
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_7
+      rect:
+        serializedVersion: 2
+        x: 333
+        y: 1147
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6282425e330755c0800000000000000
+      internalID: -4226906159060974995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_8
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 1060
+        width: 19
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a94e035b6ad11900800000000000000
+      internalID: 653543575435233700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_9
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 1026
+        width: 28
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3ccdea67edeebe00800000000000000
+      internalID: 1062548140293213242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_10
+      rect:
+        serializedVersion: 2
+        x: 1652
+        y: 1001
+        width: 25
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7719da8ffd3af6b0800000000000000
+      internalID: -5261825046873565317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_11
+      rect:
+        serializedVersion: 2
+        x: 1135
+        y: 973
+        width: 37
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d34d78ac6d1f1320800000000000000
+      internalID: 2530773868125963217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_12
+      rect:
+        serializedVersion: 2
+        x: 1812
+        y: 997
+        width: 18
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d18b4342e73728580800000000000000
+      internalID: -8826365334082242531
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_13
+      rect:
+        serializedVersion: 2
+        x: 1918
+        y: 961
+        width: 16
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 872373709106785d0800000000000000
+      internalID: -3060371761163455880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_14
+      rect:
+        serializedVersion: 2
+        x: 620
+        y: 867
+        width: 19
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e91d16c5fdb33a820800000000000000
+      internalID: 2928250013234614686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_15
+      rect:
+        serializedVersion: 2
+        x: 1193
+        y: 849
+        width: 32
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1281aacdb2ad8dc60800000000000000
+      internalID: 7843258632986302497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_16
+      rect:
+        serializedVersion: 2
+        x: 1386
+        y: 865
+        width: 23
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52c078ff45207c170800000000000000
+      internalID: 8198524210738826277
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_17
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 816
+        width: 29
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34990bd8bcc859f60800000000000000
+      internalID: 8040487515623299395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_18
+      rect:
+        serializedVersion: 2
+        x: 537
+        y: 816
+        width: 40
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 944623d20fa657790800000000000000
+      internalID: -7532997221924314039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_19
+      rect:
+        serializedVersion: 2
+        x: 965
+        y: 810
+        width: 18
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c624c5afe675e1730800000000000000
+      internalID: 3971708055545725548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 725
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b40d3e090aab6910800000000000000
+      internalID: 1831744629326546096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_21
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 624
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5acd037b7d9fc2a0800000000000000
+      internalID: -6714975365849298337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_22
+      rect:
+        serializedVersion: 2
+        x: 746
+        y: 626
+        width: 131
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c946877decb5ccb0800000000000000
+      internalID: -4844258096068539963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_23
+      rect:
+        serializedVersion: 2
+        x: 1026
+        y: 624
+        width: 24
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df79a7d4fa35ca640800000000000000
+      internalID: 5092537291033450493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_24
+      rect:
+        serializedVersion: 2
+        x: 1242
+        y: 666
+        width: 15
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: beea637ef20f41f80800000000000000
+      internalID: -8136614538218393877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_25
+      rect:
+        serializedVersion: 2
+        x: 1167
+        y: 578
+        width: 31
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d8e6de3e50da5d30800000000000000
+      internalID: 4421075087417338071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_26
+      rect:
+        serializedVersion: 2
+        x: 1904
+        y: 591
+        width: 28
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77d9323f062381f10800000000000000
+      internalID: 2240596206594268535
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_27
+      rect:
+        serializedVersion: 2
+        x: 1029
+        y: 558
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed3781399429844e0800000000000000
+      internalID: -1997185590040693794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_28
+      rect:
+        serializedVersion: 2
+        x: 597
+        y: 381
+        width: 31
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78043be33aee65360800000000000000
+      internalID: 7158171042650996871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_29
+      rect:
+        serializedVersion: 2
+        x: 601
+        y: 475
+        width: 45
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b465ee55845697d0800000000000000
+      internalID: -2912047177248971595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_30
+      rect:
+        serializedVersion: 2
+        x: 820
+        y: 342
+        width: 113
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7ec0eee1d5575a50800000000000000
+      internalID: 6509766146531577468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_31
+      rect:
+        serializedVersion: 2
+        x: 1614
+        y: 327
+        width: 28
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c888555d118c18230800000000000000
+      internalID: 3639409952811223180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_32
+      rect:
+        serializedVersion: 2
+        x: 1866
+        y: 271
+        width: 54
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4d3907be95003b80800000000000000
+      internalID: -8417221524321649331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_33
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 228
+        width: 18
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 481aadeca19545fb0800000000000000
+      internalID: -4660001742747164284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_34
+      rect:
+        serializedVersion: 2
+        x: 1320
+        y: 169
+        width: 19
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c30b0b08727c3ad40800000000000000
+      internalID: 5594534134601003068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_35
+      rect:
+        serializedVersion: 2
+        x: 1482
+        y: 112
+        width: 23
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8118cae1615cc730800000000000000
+      internalID: 4020678048327668108
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_36
+      rect:
+        serializedVersion: 2
+        x: 1171
+        y: 84
+        width: 18
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 159cf227a6683f6d0800000000000000
+      internalID: -2957872738511894191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_37
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 0
+        width: 20
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e07373ae6cc69eb00800000000000000
+      internalID: 858336805579601678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _0001_Snow-Flakes_38
+      rect:
+        serializedVersion: 2
+        x: 1087
+        y: 3
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47c180247d71f16b0800000000000000
+      internalID: -5323510021235401612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      _0001_Snow-Flakes_0: -3224684733927153447
+      _0001_Snow-Flakes_1: -6681957943864487118
+      _0001_Snow-Flakes_10: -5261825046873565317
+      _0001_Snow-Flakes_11: 2530773868125963217
+      _0001_Snow-Flakes_12: -8826365334082242531
+      _0001_Snow-Flakes_13: -3060371761163455880
+      _0001_Snow-Flakes_14: 2928250013234614686
+      _0001_Snow-Flakes_15: 7843258632986302497
+      _0001_Snow-Flakes_16: 8198524210738826277
+      _0001_Snow-Flakes_17: 8040487515623299395
+      _0001_Snow-Flakes_18: -7532997221924314039
+      _0001_Snow-Flakes_19: 3971708055545725548
+      _0001_Snow-Flakes_2: -1629404406985860951
+      _0001_Snow-Flakes_20: 1831744629326546096
+      _0001_Snow-Flakes_21: -6714975365849298337
+      _0001_Snow-Flakes_22: -4844258096068539963
+      _0001_Snow-Flakes_23: 5092537291033450493
+      _0001_Snow-Flakes_24: -8136614538218393877
+      _0001_Snow-Flakes_25: 4421075087417338071
+      _0001_Snow-Flakes_26: 2240596206594268535
+      _0001_Snow-Flakes_27: -1997185590040693794
+      _0001_Snow-Flakes_28: 7158171042650996871
+      _0001_Snow-Flakes_29: -2912047177248971595
+      _0001_Snow-Flakes_3: -1647031718641565650
+      _0001_Snow-Flakes_30: 6509766146531577468
+      _0001_Snow-Flakes_31: 3639409952811223180
+      _0001_Snow-Flakes_32: -8417221524321649331
+      _0001_Snow-Flakes_33: -4660001742747164284
+      _0001_Snow-Flakes_34: 5594534134601003068
+      _0001_Snow-Flakes_35: 4020678048327668108
+      _0001_Snow-Flakes_36: -2957872738511894191
+      _0001_Snow-Flakes_37: 858336805579601678
+      _0001_Snow-Flakes_38: -5323510021235401612
+      _0001_Snow-Flakes_4: 5481739907723200267
+      _0001_Snow-Flakes_5: -6414276988339262072
+      _0001_Snow-Flakes_6: 8794681595324288342
+      _0001_Snow-Flakes_7: -4226906159060974995
+      _0001_Snow-Flakes_8: 653543575435233700
+      _0001_Snow-Flakes_9: 1062548140293213242
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

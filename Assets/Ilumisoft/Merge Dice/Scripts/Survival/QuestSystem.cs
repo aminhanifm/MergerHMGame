@@ -29,10 +29,23 @@ namespace Ilumisoft.MergeDice.Survival
         public string description;
         public QuestRequirementProgress[] requirements;
         
+        // Quest properties from QuestData
+        public float timeLimit;
+        public int priority;
+        public bool canBeSkipped;
+        public int scoreReward;
+        public float timeBonus;
+        
         public QuestProgress(QuestData questData)
         {
             title = questData.title;
             description = questData.description;
+            timeLimit = questData.timeLimit;
+            priority = questData.priority;
+            canBeSkipped = questData.canBeSkipped;
+            scoreReward = questData.scoreReward;
+            timeBonus = questData.timeBonus;
+            
             requirements = new QuestRequirementProgress[questData.requirements.Length];
             
             for (int i = 0; i < questData.requirements.Length; i++)
@@ -94,6 +107,9 @@ namespace Ilumisoft.MergeDice.Survival
         public event Action<Quest> OnQuestChanged;
         public event Action OnQuestCompleted;
         public event Action OnAllQuestsCompleted; // New event for game over
+        public event Action<int> OnScoreReward; // New event for score rewards
+        public event Action<float> OnTimeBonus; // New event for time bonuses
+        public event Action OnNewDayStarted; // New event for day/quest transitions
 
         public bool AllQuestsCompleted {get; private set;} = false;
 
@@ -125,6 +141,8 @@ namespace Ilumisoft.MergeDice.Survival
                 OnAllQuestsCompleted?.Invoke();
                 return;
             }
+            
+            OnNewDayStarted?.Invoke();
             OnQuestChanged?.Invoke(CurrentQuest);
         }
 
@@ -161,9 +179,58 @@ namespace Ilumisoft.MergeDice.Survival
                 OnQuestChanged?.Invoke(CurrentQuest);
                 if (CurrentQuestProgress.IsComplete)
                 {
-                    OnQuestCompleted?.Invoke();
+                    CompleteCurrentQuest();
                 }
             }
+        }
+
+        private void CompleteCurrentQuest()
+        {
+            if (CurrentQuestProgress == null) return;
+
+            Debug.Log($"Quest completed: {CurrentQuestProgress.title}");
+
+            // Apply quest rewards
+            if (CurrentQuestProgress.scoreReward > 0)
+            {
+                OnScoreReward?.Invoke(CurrentQuestProgress.scoreReward);
+                Debug.Log($"Score reward granted: {CurrentQuestProgress.scoreReward}");
+            }
+
+            if (CurrentQuestProgress.timeBonus > 0)
+            {
+                OnTimeBonus?.Invoke(CurrentQuestProgress.timeBonus);
+                Debug.Log($"Time bonus granted: {CurrentQuestProgress.timeBonus} seconds");
+            }
+
+            OnQuestCompleted?.Invoke();
+        }
+
+        public bool CanSkipCurrentQuest()
+        {
+            return CurrentQuestProgress != null && CurrentQuestProgress.canBeSkipped;
+        }
+
+        public void SkipCurrentQuest()
+        {
+            if (!CanSkipCurrentQuest())
+            {
+                Debug.LogWarning("Current quest cannot be skipped!");
+                return;
+            }
+
+            Debug.Log($"Quest skipped: {CurrentQuestProgress.title}");
+            NextDay(); // Move to next day/quest
+        }
+
+        public float GetCurrentQuestTimeLimit()
+        {
+            return CurrentQuestProgress?.timeLimit ?? 0f;
+        }
+
+        public int GetCurrentQuestPriority()
+        {
+            return CurrentQuestProgress?.priority ?? 0;
         }
 
         public void NextDay()

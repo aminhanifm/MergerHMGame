@@ -9,6 +9,7 @@ public class SurvivalUI : MonoBehaviour
     [Header("References")]
     public SurvivalTimer timer;
     public QuestSystem questSystem;
+    public SurvivalGameMode gameMode; // Add reference to game mode
 
     [Header("UI Elements")]
     public TMP_Text timerText;
@@ -163,13 +164,23 @@ public class SurvivalUI : MonoBehaviour
         {
             StartCoroutine(FadeCanvasGroup(dayProgressionCanvasGroup, 1f, 0f, 0.3f));
         }
-        if (timer != null)
+        
+        // Use the game mode's method to properly handle time bonuses
+        if (gameMode != null)
         {
-            timer.StartTimer();
+            gameMode.OnNextButtonClicked();
         }
-        if (questSystem != null)
+        else
         {
-            questSystem.NextDay();
+            // Fallback to old behavior if game mode reference is missing
+            if (timer != null)
+            {
+                timer.StartTimer();
+            }
+            if (questSystem != null)
+            {
+                questSystem.NextDay();
+            }
         }
     }
 

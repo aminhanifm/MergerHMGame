@@ -8,14 +8,41 @@ namespace Ilumisoft.MergeDice.Survival
         public float TimeLimit = 60f;
         public float TimeLeft { get; private set; }
         public bool IsRunning { get; private set; }
+        public float AccumulatedTimeBonus { get; private set; }
 
         public event Action OnTimerEnd;
         public event Action<float> OnTimerTick;
 
         public void StartTimer()
         {
-            TimeLeft = TimeLimit;
+            TimeLeft = TimeLimit + AccumulatedTimeBonus;
+            AccumulatedTimeBonus = 0f; // Reset after applying
             IsRunning = true;
+        }
+
+        public void StartTimer(float customTimeLimit)
+        {
+            TimeLimit = customTimeLimit;
+            TimeLeft = TimeLimit + AccumulatedTimeBonus;
+            AccumulatedTimeBonus = 0f; // Reset after applying
+            IsRunning = true;
+        }
+
+        public void AddTimeBonusForNextQuest(float bonusSeconds)
+        {
+            AccumulatedTimeBonus += bonusSeconds;
+            Debug.Log($"Time bonus accumulated for next quest: {bonusSeconds} seconds. Total bonus: {AccumulatedTimeBonus:F1}");
+        }
+
+        public void ClearAccumulatedBonus()
+        {
+            AccumulatedTimeBonus = 0f;
+        }
+
+        public void ResetTimer()
+        {
+            TimeLeft = TimeLimit;
+            IsRunning = false;
         }
 
         public void StopTimer()
