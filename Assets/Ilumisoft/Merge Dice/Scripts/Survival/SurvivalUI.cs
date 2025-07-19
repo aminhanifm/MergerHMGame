@@ -246,6 +246,7 @@ public class SurvivalUI : MonoBehaviour
         if (gameMode != null)
         {
             gameMode.OnNextButtonClicked();
+            gameMode.SurvivalResources.StartResourceDecay();
         }
         else
         {

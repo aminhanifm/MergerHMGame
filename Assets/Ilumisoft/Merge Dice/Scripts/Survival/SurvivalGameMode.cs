@@ -69,6 +69,8 @@ namespace Ilumisoft.MergeDice.Survival
         [BoxGroup("Game State")]
         bool resourcesDepleted = false; // New flag for resource depletion
         [BoxGroup("Game State")]
+        bool gameRunning = false; // Flag to track if game is actively running
+        [BoxGroup("Game State")]
         GameTileTracker tileTracker; // Add tracker reference
         ISpawner gameBoardSpawner;
         IGameOverCheck gameOverCheck;
@@ -196,6 +198,46 @@ namespace Ilumisoft.MergeDice.Survival
             }
         }
 
+        void Update()
+        {
+            // Only run these checks when the game is actively running
+            if (!gameRunning) return;
+
+            // Handle quest completion independently of operations
+            if (questCompleted && !waitingForNextDay)
+            {
+                Debug.Log("Quest completed! Waiting for next day.");
+                waitingForNextDay = true;
+            }
+
+            // Handle day progression when player clicks Next
+            if (waitingForNextDay && questCompleted)
+            {
+                // The OnNextButtonClicked method will handle the actual progression
+                // This just ensures we stay in waiting state until then
+                return;
+            }
+
+            // Check for game over conditions
+            if (timesUp || resourcesDepleted)
+            {
+                if (timesUp) Debug.Log("Time's up! Game over.");
+                if (resourcesDepleted) Debug.Log("Resources depleted! Game over.");
+                gameRunning = false;
+                StartCoroutine(EndGame());
+                return;
+            }
+
+            // Check if all quests are completed
+            if (questSystem.AllQuestsCompleted)
+            {
+                Debug.Log("All quests completed! Game over. No more days left.");
+                gameRunning = false;
+                StartCoroutine(EndGame());
+                return;
+            }
+        }
+
         public override IEnumerator StartGame()
         {
             Score.Reset();
@@ -224,6 +266,9 @@ namespace Ilumisoft.MergeDice.Survival
             survivalTimer.StartTimer(timeLimit);
             questCompleted = false;
             resourcesDepleted = false;
+            timesUp = false;
+            waitingForNextDay = false;
+            gameRunning = true; // Start the game logic in Update
             yield return null;
         }
 
@@ -241,13 +286,15 @@ namespace Ilumisoft.MergeDice.Survival
         {
             survivalTimer.OnTimerEnd += OnTimerEnd;
             questSystem.OnQuestCompleted += OnQuestCompleted;
-            while (true)
+            
+            while (gameRunning)
             {
                 // Unlimited mode: reset board if no moves and not in waiting state
-                if (unlimitedMode && gameOverCheck.IsGameOver())
+                if (unlimitedMode && gameOverCheck.IsGameOver() && !waitingForNextDay)
                 {
                     NotificationEvents.Send(new NotificationMessage("No moves left"));
                     yield return new WaitForSeconds(1f);
+                    
                     // Temporarily disable quest tracking
                     if (tileTracker != null) tileTracker.ignoreTracking = true;
                     
@@ -277,61 +324,28 @@ namespace Ilumisoft.MergeDice.Survival
                     continue; // restart loop
                 }
 
-                yield return WaitForInputOrTimesUp();
-                if (timesUp || resourcesDepleted)
+                // Only wait for input and execute operations if not waiting for next day
+                if (!waitingForNextDay)
                 {
-                    if (timesUp) Debug.Log("Time's up! Game over.");
-                    if (resourcesDepleted) Debug.Log("Resources depleted! Game over.");
-                    break;
+                    yield return WaitForInputOrTimesUp();
+                    if (gameRunning) // Check if game is still running after waiting
+                    {
+                        yield return operations.Execute();
+                    }
                 }
-                yield return operations.Execute();
-                
-                // If quest completed, show progression UI and wait for player
-                if (questCompleted)
+                else
                 {
-                    Debug.Log("Quest completed! Waiting for next day.");
-                    waitingForNextDay = true;
-                    
-                    // Wait for player to click Next button
-                    while (waitingForNextDay)
-                    {
-                        yield return null;
-                        
-                        if (timesUp || resourcesDepleted)
-                        {
-                            waitingForNextDay = false;
-                            questCompleted = false;
-                            break; // Exit the waiting loop
-                        }
-                        
-                        if (questSystem.AllQuestsCompleted)
-                        {
-                            waitingForNextDay = false;
-                            break; // Exit the waiting loop
-                        }
-                    }
-                    
-                    if (timesUp || resourcesDepleted)
-                    {
-                        if (timesUp) Debug.Log("Time's up! Game over.");
-                        if (resourcesDepleted) Debug.Log("Resources depleted! Game over.");
-                        break;
-                    }
-                    if (questSystem.AllQuestsCompleted)
-                    {
-                        Debug.Log("All quests completed! Game over. No more days left.");
-                        break;
-                    }
-                    
-                    // Continue to next iteration of the main loop after day progression
-                    continue;
+                    // When waiting for next day, just yield and let Update handle the logic
+                    yield return null;
                 }
             }
         }
 
         public override IEnumerator EndGame()
         {
+            gameRunning = false; // Stop the Update logic
             survivalTimer.StopTimer();
+            survivalResources.StopResourceDecay();
             survivalTimer.OnTimerEnd -= OnTimerEnd;
             questSystem.OnQuestCompleted -= OnQuestCompleted;
             questSystem.OnNewDayStarted -= OnNewDayStarted;
@@ -346,6 +360,7 @@ namespace Ilumisoft.MergeDice.Survival
         {
             questCompleted = true;
             survivalTimer.StopTimer();
+            survivalResources.StopResourceDecay();
         }
 
         void OnTimerEnd()
@@ -385,8 +400,6 @@ namespace Ilumisoft.MergeDice.Survival
                 // Read the bonus BEFORE calling StartTimer (which resets it to 0)
                 float bonusTime = survivalTimer.AccumulatedTimeBonus;
                 survivalTimer.StartTimer(timeLimit);
-                questCompleted = false;
-                waitingForNextDay = false; // Reset waiting flag
                 
                 Debug.Log($"New quest started with time limit: {timeLimit + bonusTime:F1} seconds (base: {timeLimit}, bonus: {bonusTime:F1})");
             }
@@ -397,13 +410,17 @@ namespace Ilumisoft.MergeDice.Survival
         /// </summary>
         public void OnNextButtonClicked()
         {
-            if (waitingForNextDay && questCompleted)
+            if (waitingForNextDay && questCompleted && gameRunning)
             {
                 // Progress to next day when player clicks Next
-                if (!questSystem.AllQuestsCompleted && !timesUp)
+                if (!questSystem.AllQuestsCompleted && !timesUp && !resourcesDepleted)
                 {
                     questSystem.NextDay();
                     Debug.Log($"Player clicked Next - Moving to Day {questSystem.Day}");
+                    
+                    // Reset the waiting state so the game can continue
+                    waitingForNextDay = false;
+                    questCompleted = false; // This will be set again when next quest completes
                 }
             }
         }
