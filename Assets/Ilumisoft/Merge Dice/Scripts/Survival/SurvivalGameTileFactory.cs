@@ -51,9 +51,9 @@ namespace Ilumisoft.MergeDice.Survival
             if (gameTile is DiceGameTile diceTile)
             {
                 int targetLevel = GetStrategicLevel();
-                Debug.Log($"SurvivalGameTileFactory: Setting tile to level {targetLevel}");
+                // Debug.Log($"SurvivalGameTileFactory: Setting tile to level {targetLevel}");
                 diceTile.CurrentLevel = targetLevel;
-                Debug.Log($"SurvivalGameTileFactory: After setting, tile CurrentLevel = {diceTile.CurrentLevel}, MaxLevel = {diceTile.MaxLevel}");
+                // Debug.Log($"SurvivalGameTileFactory: After setting, tile CurrentLevel = {diceTile.CurrentLevel}, MaxLevel = {diceTile.MaxLevel}");
             }
 
             // Apply proper cell scale like GameBoard does
@@ -82,11 +82,11 @@ namespace Ilumisoft.MergeDice.Survival
             {
                 // Use the same distribution logic as the game mode
                 int level = survivalGameMode.GetDistributedLevel();
-                Debug.Log($"SurvivalGameTileFactory: Using game mode distribution, got level {level}");
+                // Debug.Log($"SurvivalGameTileFactory: Using game mode distribution, got level {level}");
                 return level;
             }
             
-            Debug.Log("SurvivalGameTileFactory: No game mode reference, using fallback distribution");
+            // Debug.Log("SurvivalGameTileFactory: No game mode reference, using fallback distribution");
             // Fallback to original logic if no game mode reference
             float randomValue = Random.value;
             
@@ -94,14 +94,14 @@ namespace Ilumisoft.MergeDice.Survival
             {
                 // Heavily favor levels 0-1 for easy combinations
                 int level = Random.Range(0, 2);
-                Debug.Log($"SurvivalGameTileFactory: Fallback low bias, got level {level}");
+                // Debug.Log($"SurvivalGameTileFactory: Fallback low bias, got level {level}");
                 return level;
             }
             else
             {
                 // Occasionally spawn higher levels but cap them
                 int level = Random.Range(0, Mathf.Min(maxRandomLevel + 1, 5));
-                Debug.Log($"SurvivalGameTileFactory: Fallback high level, got level {level}");
+                // Debug.Log($"SurvivalGameTileFactory: Fallback high level, got level {level}");
                 return level;
             }
         }

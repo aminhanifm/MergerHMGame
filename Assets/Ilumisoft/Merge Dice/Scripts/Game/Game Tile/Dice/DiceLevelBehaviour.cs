@@ -34,7 +34,7 @@ namespace Ilumisoft.MergeDice
             else
             {
                 // Level was already set by a factory, don't override it
-                Debug.Log($"DiceLevelBehaviour: Level explicitly set to {currentLevel} by factory, not overriding");
+                // Debug.Log($"DiceLevelBehaviour: Level explicitly set to {currentLevel} by factory, not overriding");
             }
         }
 
@@ -63,7 +63,7 @@ namespace Ilumisoft.MergeDice
             {
                 currentLevel = Mathf.Clamp(value, 0, MaxLevel);
                 levelSetByFactory = true; // Mark that level was explicitly set
-                Debug.Log($"DiceLevelBehaviour: Level set to {currentLevel} (clamped from {value})");
+                // Debug.Log($"DiceLevelBehaviour: Level set to {currentLevel} (clamped from {value})");
 
                 OnLevelChanged?.Invoke();
             }

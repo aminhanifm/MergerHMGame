@@ -76,6 +76,11 @@ public class SurvivalUI : MonoBehaviour
     [Tooltip("Objects that are disabled during intro state but enabled during progression state")]
     public GameObject[] enabledOnProgressionOnly;
 
+    // Flag to prevent spam clicking of start day button
+    private bool isStartingDay = false;
+    // Flag to prevent spam clicking of next day button  
+    private bool isProcessingDayTransition = false;
+
     [BoxGroup("Unlock Animation")]
     [Header("Unlock Animation")]
     public GameObject objectsParent; // Assign in inspector
@@ -348,6 +353,10 @@ public class SurvivalUI : MonoBehaviour
 
     private void OnNextDayButtonClicked()
     {
+        // Prevent spam clicking during day transitions
+        if (isProcessingDayTransition) return;
+        isProcessingDayTransition = true;
+        
         // Check if there's a next quest available
         if (questSystem != null && questSystem.HasNextQuest())
         {
@@ -369,6 +378,8 @@ public class SurvivalUI : MonoBehaviour
         {
             // No more quests - Game Over
             HandleGameOver();
+            // Reset flag since game is over
+            isProcessingDayTransition = false;
         }
     }
     
@@ -391,6 +402,10 @@ public class SurvivalUI : MonoBehaviour
     
     private void OnStartDayButtonClicked()
     {
+        // Prevent spam clicking during fade transitions
+        if (isStartingDay) return;
+        isStartingDay = true;
+        
         // Trigger environmental effects for gameplay timing
         if (questSystem?.CurrentQuestData != null)
         {
@@ -417,6 +432,17 @@ public class SurvivalUI : MonoBehaviour
         {
             gameMode.OnDayIntroCompleted();
         }
+        
+        // Reset flags after a delay to allow next day cycle
+        StartCoroutine(ResetStartingDayFlag());
+    }
+    
+    private IEnumerator ResetStartingDayFlag()
+    {
+        // Wait for fade animations to complete
+        yield return new WaitForSeconds(0.5f);
+        isStartingDay = false;
+        // Note: isProcessingDayTransition is now reset in ShowDayIntro() when the day intro appears
     }
     
     private void SetObjectVisibilityForIntro()
@@ -484,6 +510,9 @@ public class SurvivalUI : MonoBehaviour
     {
         if (dayIntroCanvasGroup != null && questSystem != null && questSystem.CurrentQuest != null)
         {
+            // Reset the day transition flag since we're now showing the intro (transition is complete)
+            isProcessingDayTransition = false;
+            
             // Set object visibility for intro
             SetObjectVisibilityForIntro();
             

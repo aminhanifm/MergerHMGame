@@ -55,7 +55,7 @@ namespace Ilumisoft.MergeDice.Survival
         {
             Vector3 position = gameBoard.GetPosition(cell.x, cell.y);
             
-            Debug.Log($"Spawning tile at {position} in SurvivalFillEmptyCells");
+            // Debug.Log($"Spawning tile at {position} in SurvivalFillEmptyCells");
             
             // Use the survival factory directly - it now handles scaling and distribution
             var tile = survivalFactory.Spawn(position);
