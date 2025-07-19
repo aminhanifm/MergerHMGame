@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Day 3
   m_EditorClassIdentifier: 
   title: Day 3
-  description: 
+  description: There is a wasp nearby, we should make tent for the safety
   requirements:
   - tileLevel: 0
     targetAmount: 4
@@ -21,3 +21,22 @@ MonoBehaviour:
     targetAmount: 4
   - tileLevel: 2
     targetAmount: 1
+  timeLimit: 0
+  priority: 0
+  canBeSkipped: 0
+  scoreReward: 0
+  timeBonus: 0
+  eventObjectNames:
+  - Wasp
+  unlockAnimationObjectNames:
+  - Tent
+  showObjectNames: []
+  showObjectsTiming: 2
+  hideObjectNames: []
+  hideObjectsTiming: 2
+  eventObjects: []
+  unlockAnimationObjects: []
+  showObjects: []
+  hideObjects: []
+  enableSnowyTextures: 0
+  effectTiming: 2

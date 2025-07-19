@@ -48,6 +48,34 @@ public class SurvivalUI : MonoBehaviour
     [BoxGroup("Progression UI")]
     public UnityEngine.UI.Button nextDayButton;
 
+    [BoxGroup("Day Intro UI")]
+    [Header("Day Intro UI")]
+    [Tooltip("Canvas group for the day intro overlay")]
+    public CanvasGroup dayIntroCanvasGroup;
+    [BoxGroup("Day Intro UI")]
+    [Tooltip("Title text for the day intro (e.g., 'Day 2')")]
+    public TMP_Text dayIntroTitleText;
+    [BoxGroup("Day Intro UI")]
+    [Tooltip("Quest title text for the day intro")]
+    public TMP_Text dayIntroQuestTitleText;
+    [BoxGroup("Day Intro UI")]
+    [Tooltip("Quest description text for the day intro")]
+    public TMP_Text dayIntroDescriptionText;
+    [BoxGroup("Day Intro UI")]
+    [Tooltip("Objectives text showing what needs to be done")]
+    public TMP_Text dayIntroObjectivesText;
+    [BoxGroup("Day Intro UI")]
+    [Tooltip("Button to start the day after reading the intro")]
+    public UnityEngine.UI.Button startDayButton;
+
+    [BoxGroup("Object Visibility Control")]
+    [Header("Global Object Visibility Control")]
+    [Tooltip("Objects that are enabled during intro state but disabled during progression state")]
+    public GameObject[] enabledOnIntroOnly;
+    [BoxGroup("Object Visibility Control")]
+    [Tooltip("Objects that are disabled during intro state but enabled during progression state")]
+    public GameObject[] enabledOnProgressionOnly;
+
     [BoxGroup("Unlock Animation")]
     [Header("Unlock Animation")]
     public GameObject objectsParent; // Assign in inspector
@@ -118,14 +146,38 @@ public class SurvivalUI : MonoBehaviour
         {
             nextDayButton.onClick.AddListener(OnNextDayButtonClicked);
         }
+        if (startDayButton != null)
+        {
+            startDayButton.onClick.AddListener(OnStartDayButtonClicked);
+        }
         if (dayProgressionCanvasGroup != null)
         {
             dayProgressionCanvasGroup.alpha = 0f;
             dayProgressionCanvasGroup.gameObject.SetActive(false);
         }
+        if (dayIntroCanvasGroup != null)
+        {
+            dayIntroCanvasGroup.alpha = 0f;
+            dayIntroCanvasGroup.gameObject.SetActive(false);
+        }
         if (nextDayButton != null)
         {
             nextDayButton.gameObject.SetActive(false);
+        }
+        
+        // Show day intro for the initial day (Day 1) after a short delay
+        StartCoroutine(ShowInitialDayIntro());
+    }
+
+    private IEnumerator ShowInitialDayIntro()
+    {
+        // Wait for quest system to be ready
+        yield return null;
+        
+        // Show intro for Day 1
+        if (questSystem != null && questSystem.CurrentQuest != null)
+        {
+            ShowDayIntro();
         }
     }
 
@@ -138,6 +190,10 @@ public class SurvivalUI : MonoBehaviour
         if (nextDayButton != null)
         {
             nextDayButton.onClick.RemoveListener(OnNextDayButtonClicked);
+        }
+        if (startDayButton != null)
+        {
+            startDayButton.onClick.RemoveListener(OnStartDayButtonClicked);
         }
     }
 
@@ -155,7 +211,19 @@ public class SurvivalUI : MonoBehaviour
         {
             int spriteIndex = req.tileLevel;
             string icon = $"<sprite={spriteIndex}>";
-            sb.AppendLine($"{icon} x {req.currentAmount}/{req.targetAmount}");
+            
+            // Check if requirement is met
+            bool isCompleted = req.currentAmount >= req.targetAmount;
+            string progressText = $"{icon} x {req.currentAmount}/{req.targetAmount}";
+            
+            // Add stroke effect if requirement is completed
+            if (isCompleted)
+            {
+                // Add rich text markup for stroke/outline effect
+                progressText = $"<mark=#00FF0040><b>{progressText}</b></mark>";
+            }
+            
+            sb.AppendLine(progressText);
         }
         if (questTitleText != null)
             questTitleText.text = quest.title;
@@ -231,34 +299,244 @@ public class SurvivalUI : MonoBehaviour
             if (dayProgressionText != null)
             {
                 dayProgressionText.text = $"Day <b>{questSystem.Day}</b> Complete!";
+                // Show progression text that was hidden during intro
+                dayProgressionText.gameObject.SetActive(true);
             }
+        }
+        
+        // Trigger environmental effects for progression timing
+        if (questSystem?.CurrentQuestData != null)
+        {
+            questSystem.CurrentQuestData.TriggerEnvironmentalEffectEvent(EnvironmentalEffectTiming.ProgressionOnly);
+        }
+        
+        // Show objects from current quest that should be visible during progression
+        if (questSystem != null)
+        {
+            questSystem.ShowCurrentQuestShowObjectsWithTiming(EnvironmentalEffectTiming.ProgressionOnly);
+        }
+        
+        // Hide objects that should be hidden during progression for current quest
+        if (questSystem != null)
+        {
+            questSystem.HideCurrentQuestHideObjectsWithTiming(EnvironmentalEffectTiming.ProgressionOnly);
+        }
+        
+        // Handle global progression visibility control
+        if (enabledOnIntroOnly != null)
+        {
+            foreach (var obj in enabledOnIntroOnly)
+            {
+                if (obj != null) obj.SetActive(false); // Disable during progression
+            }
+        }
+        
+        if (enabledOnProgressionOnly != null)
+        {
+            foreach (var obj in enabledOnProgressionOnly)
+            {
+                if (obj != null) obj.SetActive(true); // Enable during progression
+            }
+        }
+        
+        // Show next day button that was hidden during intro
+        if (nextDayButton != null)
+        {
+            nextDayButton.gameObject.SetActive(true);
         }
     }
 
     private void OnNextDayButtonClicked()
     {
+        // Check if there's a next quest available
+        if (questSystem != null && questSystem.HasNextQuest())
+        {
+            // Use the game mode's method to properly handle day progression
+            if (gameMode != null)
+            {
+                gameMode.OnNextButtonClicked();
+            }
+            else
+            {
+                // Fallback to old behavior if game mode reference is missing
+                questSystem.NextDay();
+            }
+            
+            // Show day intro immediately after progression (before gameplay starts)
+            StartCoroutine(ShowDayIntroAfterDelay());
+        }
+        else
+        {
+            // No more quests - Game Over
+            HandleGameOver();
+        }
+    }
+    
+    private void HandleGameOver()
+    {
+        Debug.Log("Game Over - All quests completed!");
+        // You can add game over UI here or trigger game over event
+        // For now, just log the game over state
+        
+        // Optional: Show a game over screen or return to main menu
+        // Example: SceneManager.LoadScene("GameOverScene");
+    }
+    
+    private IEnumerator ShowDayIntroAfterDelay()
+    {
+        // Small delay to ensure quest system has updated
+        yield return new WaitForSeconds(0.5f);
+        ShowDayIntro();
+    }
+    
+    private void OnStartDayButtonClicked()
+    {
+        // Trigger environmental effects for gameplay timing
+        if (questSystem?.CurrentQuestData != null)
+        {
+            questSystem.CurrentQuestData.TriggerEnvironmentalEffectEvent(EnvironmentalEffectTiming.GameplayOnly);
+        }
+        
+        // Hide the day intro overlay
+        if (dayIntroCanvasGroup != null)
+        {
+            StartCoroutine(FadeCanvasGroup(dayIntroCanvasGroup, 1f, 0f, 0.3f));
+        }
+        
+        // Fade out the progression UI
         if (dayProgressionCanvasGroup != null)
         {
             StartCoroutine(FadeCanvasGroup(dayProgressionCanvasGroup, 1f, 0f, 0.3f));
         }
         
-        // Use the game mode's method to properly handle time bonuses
+        // Show gameplay objects and hide intro objects
+        SetObjectVisibilityForGameplay();
+        
+        // Tell the game mode to actually start the day
         if (gameMode != null)
         {
-            gameMode.OnNextButtonClicked();
-            gameMode.SurvivalResources.StartResourceDecay();
+            gameMode.OnDayIntroCompleted();
         }
-        else
+    }
+    
+    private void SetObjectVisibilityForIntro()
+    {
+        // Hide all event objects from other quests first
+        if (questSystem != null)
         {
-            // Fallback to old behavior if game mode reference is missing
-            if (timer != null)
+            questSystem.HideAllEventObjectsExceptCurrent();
+        }
+        
+        // Show objects from current quest that should be visible during intro
+        if (questSystem != null)
+        {
+            questSystem.ShowCurrentQuestShowObjectsWithTiming(EnvironmentalEffectTiming.IntroOnly);
+        }
+        
+        // Hide objects that should be hidden during intro for current quest
+        if (questSystem != null)
+        {
+            questSystem.HideCurrentQuestHideObjectsWithTiming(EnvironmentalEffectTiming.IntroOnly);
+        }
+        
+        // Show event objects for current quest
+        if (questSystem?.CurrentQuestData != null)
+        {
+            questSystem.CurrentQuestData.ShowEventObjects();
+        }
+        
+        // Handle global intro visibility control
+        if (enabledOnIntroOnly != null)
+        {
+            foreach (var obj in enabledOnIntroOnly)
             {
-                timer.StartTimer();
+                if (obj != null) obj.SetActive(true); // Enable during intro
             }
-            if (questSystem != null)
+        }
+        
+        if (enabledOnProgressionOnly != null)
+        {
+            foreach (var obj in enabledOnProgressionOnly)
             {
-                questSystem.NextDay();
+                if (obj != null) obj.SetActive(false); // Disable during intro
             }
+        }
+    }
+    
+    private void SetObjectVisibilityForGameplay()
+    {
+        // Hide event objects from current quest (gameplay doesn't show event objects)
+        if (questSystem?.CurrentQuestData != null)
+        {
+            questSystem.CurrentQuestData.HideEventObjects();
+        }
+        
+        // Show objects that were hidden during intro/progression (restore normal state)
+        if (questSystem?.CurrentQuestData != null)
+        {
+            questSystem.CurrentQuestData.ShowHideObjects();
+        }
+        
+        // Note: Global intro/progression objects are not managed here since gameplay is separate
+    }
+    
+    public void ShowDayIntro()
+    {
+        if (dayIntroCanvasGroup != null && questSystem != null && questSystem.CurrentQuest != null)
+        {
+            // Set object visibility for intro
+            SetObjectVisibilityForIntro();
+            
+            // Trigger environmental effects for intro timing
+            if (questSystem.CurrentQuestData != null)
+            {
+                questSystem.CurrentQuestData.TriggerEnvironmentalEffectEvent(EnvironmentalEffectTiming.IntroOnly);
+            }
+            
+            // Show progression canvas but hide specific elements during intro
+            if (dayProgressionCanvasGroup != null)
+            {
+                dayProgressionCanvasGroup.gameObject.SetActive(true);
+                dayProgressionCanvasGroup.alpha = 1f;
+            }
+            
+            // Hide progression text and next day button during intro
+            if (dayProgressionText != null)
+                dayProgressionText.gameObject.SetActive(false);
+            if (nextDayButton != null)
+                nextDayButton.gameObject.SetActive(false);
+            
+            // Update intro texts
+            if (dayIntroTitleText != null)
+            {
+                dayIntroTitleText.text = $"Day {questSystem.Day}";
+            }
+            
+            if (dayIntroQuestTitleText != null)
+            {
+                dayIntroQuestTitleText.text = questSystem.CurrentQuest.title;
+            }
+            
+            if (dayIntroDescriptionText != null)
+            {
+                dayIntroDescriptionText.text = questSystem.CurrentQuest.description;
+            }
+            
+            if (dayIntroObjectivesText != null)
+            {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                sb.AppendLine("Objectives:");
+                foreach (var req in questSystem.CurrentQuest.requirements)
+                {
+                    int spriteIndex = req.tileLevel;
+                    string icon = $"<sprite={spriteIndex}>";
+                    sb.AppendLine($"• {icon} Destroy {req.targetAmount} Level {req.tileLevel} tiles");
+                }
+                dayIntroObjectivesText.text = sb.ToString();
+            }
+            
+            // Show the intro overlay
+            StartCoroutine(FadeCanvasGroup(dayIntroCanvasGroup, 0f, 1f, 0.4f));
         }
     }
 
@@ -281,15 +559,31 @@ public class SurvivalUI : MonoBehaviour
     public void ShowDayUnlockAnimation(int day)
     {
         ShowDayProgression();
-        string dayName = $"Day {day}";
-        Transform obj = objectsParent?.transform.Find(dayName);
-        if (obj != null)
+        
+        // Use quest-based unlock animation objects instead of day names
+        if (questSystem?.CurrentQuestData != null)
         {
-            StartCoroutine(UnlockRoutine(obj.gameObject, null)); // Remove shadow dependency
+            GameObject[] unlockObjects = questSystem.CurrentQuestData.GetUnlockAnimationObjects();
+            if (unlockObjects != null && unlockObjects.Length > 0)
+            {
+                // Animate all unlock objects for this quest
+                foreach (var obj in unlockObjects)
+                {
+                    if (obj != null)
+                    {
+                        StartCoroutine(UnlockRoutine(obj, null));
+                    }
+                }
+            }
+            else
+            {
+                // Fallback: show next day button after a delay
+                StartCoroutine(DelayedShowNextDayButton());
+            }
         }
         else
         {
-            // fallback: show next day button after a delay to ensure game mode is in waiting state
+            // Fallback: show next day button after a delay
             StartCoroutine(DelayedShowNextDayButton());
         }
     }

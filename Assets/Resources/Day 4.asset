@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Day 4
   m_EditorClassIdentifier: 
   title: Day 4
-  description: 
+  description: We need a shovel to prepare for making a farm plot
   requirements:
   - tileLevel: 3
     targetAmount: 3
@@ -21,3 +21,21 @@ MonoBehaviour:
     targetAmount: 4
   - tileLevel: 2
     targetAmount: 3
+  timeLimit: 0
+  priority: 0
+  canBeSkipped: 0
+  scoreReward: 0
+  timeBonus: 0
+  eventObjectNames: []
+  unlockAnimationObjectNames:
+  - Shovel
+  showObjectNames: []
+  showObjectsTiming: 2
+  hideObjectNames: []
+  hideObjectsTiming: 2
+  eventObjects: []
+  unlockAnimationObjects: []
+  showObjects: []
+  hideObjects: []
+  enableSnowyTextures: 0
+  effectTiming: 2

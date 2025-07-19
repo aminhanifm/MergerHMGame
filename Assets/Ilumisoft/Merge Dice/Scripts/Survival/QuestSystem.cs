@@ -115,6 +115,73 @@ namespace Ilumisoft.MergeDice.Survival
 
         public QuestDatabase questDatabase; // Assign in inspector
 
+        /// <summary>
+        /// Hide event objects from all quests except the current one
+        /// </summary>
+        public void HideAllEventObjectsExceptCurrent()
+        {
+            if (questDatabase?.quests != null)
+            {
+                foreach (var questData in questDatabase.quests)
+                {
+                    if (questData != null && questData != CurrentQuestData)
+                    {
+                        questData.HideEventObjects();
+                    }
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Show show objects from the current quest only
+        /// </summary>
+        public void ShowCurrentQuestShowObjects()
+        {
+            ShowCurrentQuestShowObjectsWithTiming(EnvironmentalEffectTiming.Both); // Default behavior
+        }
+        
+        /// <summary>
+        /// Show show objects from the current quest with specific timing
+        /// </summary>
+        public void ShowCurrentQuestShowObjectsWithTiming(EnvironmentalEffectTiming currentTiming)
+        {
+            if (CurrentQuestData != null)
+            {
+                CurrentQuestData.ShowObjectsWithTiming(currentTiming);
+            }
+        }
+        
+        /// <summary>
+        /// Hide objects from the current quest only (objects that should be hidden during intro/progression)
+        /// </summary>
+        public void HideCurrentQuestHideObjects()
+        {
+            HideCurrentQuestHideObjectsWithTiming(EnvironmentalEffectTiming.Both); // Default behavior
+        }
+        
+        /// <summary>
+        /// Hide objects from the current quest with specific timing
+        /// </summary>
+        public void HideCurrentQuestHideObjectsWithTiming(EnvironmentalEffectTiming currentTiming)
+        {
+            if (CurrentQuestData != null)
+            {
+                CurrentQuestData.HideObjectsWithTiming(currentTiming);
+            }
+        }
+
+        /// <summary>
+        /// Check if there's a quest available for the next day
+        /// </summary>
+        public bool HasNextQuest()
+        {
+            int nextDay = Day + 1;
+            return questDatabase != null && 
+                   questDatabase.quests != null && 
+                   nextDay - 1 < questDatabase.quests.Length &&
+                   questDatabase.quests[nextDay - 1] != null;
+        }
+
         void Awake()
         {
             OnAllQuestsCompleted += () => 

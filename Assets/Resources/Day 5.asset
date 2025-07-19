@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Day 5
   m_EditorClassIdentifier: 
   title: Day 5
-  description: 
+  description: Now we need to make a farm to grow some crops
   requirements:
   - tileLevel: 4
     targetAmount: 5
@@ -21,3 +21,21 @@ MonoBehaviour:
     targetAmount: 3
   - tileLevel: 2
     targetAmount: 3
+  timeLimit: 0
+  priority: 0
+  canBeSkipped: 0
+  scoreReward: 0
+  timeBonus: 0
+  eventObjectNames: []
+  unlockAnimationObjectNames:
+  - Farm
+  showObjectNames: []
+  showObjectsTiming: 2
+  hideObjectNames: []
+  hideObjectsTiming: 2
+  eventObjects: []
+  unlockAnimationObjects: []
+  showObjects: []
+  hideObjects: []
+  enableSnowyTextures: 0
+  effectTiming: 2

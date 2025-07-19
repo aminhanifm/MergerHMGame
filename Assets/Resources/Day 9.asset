@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Day 9
   m_EditorClassIdentifier: 
   title: Day 9
-  description: 
+  description: A racoon is trying to steal the foods from the box, we need to change
+    it to a bag
   requirements:
   - tileLevel: 0
     targetAmount: 6
@@ -25,3 +26,23 @@ MonoBehaviour:
     targetAmount: 5
   - tileLevel: 2
     targetAmount: 2
+  timeLimit: 0
+  priority: 0
+  canBeSkipped: 0
+  scoreReward: 0
+  timeBonus: 0
+  eventObjectNames:
+  - Racoon
+  unlockAnimationObjectNames:
+  - Bag
+  showObjectNames: []
+  showObjectsTiming: 2
+  hideObjectNames:
+  - Food Box
+  hideObjectsTiming: 1
+  eventObjects: []
+  unlockAnimationObjects: []
+  showObjects: []
+  hideObjects: []
+  enableSnowyTextures: 0
+  effectTiming: 2

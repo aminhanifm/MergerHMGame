@@ -13,14 +13,32 @@ MonoBehaviour:
   m_Name: Day 1
   m_EditorClassIdentifier: 
   title: Day 1
-  description: 
+  description: We need to build campfire for the upcoming night
   requirements:
   - tileLevel: 0
-    targetAmount: 5
+    targetAmount: 10
+  - tileLevel: 4
+    targetAmount: 8
+  - tileLevel: 3
+    targetAmount: 6
   - tileLevel: 1
-    targetAmount: 4
+    targetAmount: 15
   timeLimit: 0
   priority: 0
   canBeSkipped: 0
-  scoreReward: 100
+  scoreReward: 0
   timeBonus: 0
+  eventObjectNames: []
+  unlockAnimationObjectNames:
+  - Campfire
+  showObjectNames: []
+  showObjectsTiming: 2
+  hideObjectNames: []
+  hideObjectsTiming: 2
+  eventObjects: []
+  unlockAnimationObjects:
+  - {fileID: 0}
+  showObjects: []
+  hideObjects: []
+  enableSnowyTextures: 0
+  effectTiming: 2

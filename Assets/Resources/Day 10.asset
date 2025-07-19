@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Day 10
   m_EditorClassIdentifier: 
   title: Day 10
-  description: 
+  description: There's upcoming snow, we need to craft bedroll fast
   requirements:
   - tileLevel: 0
     targetAmount: 2
@@ -25,3 +25,22 @@ MonoBehaviour:
     targetAmount: 3
   - tileLevel: 5
     targetAmount: 5
+  timeLimit: 0
+  priority: 0
+  canBeSkipped: 0
+  scoreReward: 0
+  timeBonus: 0
+  eventObjectNames: []
+  unlockAnimationObjectNames:
+  - Bedroll
+  showObjectNames:
+  - Snow
+  showObjectsTiming: 2
+  hideObjectNames: []
+  hideObjectsTiming: 2
+  eventObjects: []
+  unlockAnimationObjects: []
+  showObjects: []
+  hideObjects: []
+  enableSnowyTextures: 0
+  effectTiming: 1

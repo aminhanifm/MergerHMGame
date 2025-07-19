@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Day 2
   m_EditorClassIdentifier: 
   title: Day 2
-  description: 
+  description: The lake might be helpful if we build a barrel to store the water
   requirements:
   - tileLevel: 0
     targetAmount: 8
@@ -22,5 +22,18 @@ MonoBehaviour:
   timeLimit: 0
   priority: 0
   canBeSkipped: 0
-  scoreReward: 100
+  scoreReward: 0
   timeBonus: 0
+  eventObjectNames: []
+  unlockAnimationObjectNames:
+  - Barrel
+  showObjectNames: []
+  showObjectsTiming: 2
+  hideObjectNames: []
+  hideObjectsTiming: 2
+  eventObjects: []
+  unlockAnimationObjects: []
+  showObjects: []
+  hideObjects: []
+  enableSnowyTextures: 0
+  effectTiming: 2

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Day 7
   m_EditorClassIdentifier: 
   title: Day 7
-  description: 
+  description: I got tripped last night, need to craft some medkit
   requirements:
   - tileLevel: 1
     targetAmount: 4
@@ -25,3 +25,21 @@ MonoBehaviour:
     targetAmount: 3
   - tileLevel: 4
     targetAmount: 3
+  timeLimit: 0
+  priority: 0
+  canBeSkipped: 0
+  scoreReward: 0
+  timeBonus: 0
+  eventObjectNames: []
+  unlockAnimationObjectNames:
+  - Medkit
+  showObjectNames: []
+  showObjectsTiming: 2
+  hideObjectNames: []
+  hideObjectsTiming: 2
+  eventObjects: []
+  unlockAnimationObjects: []
+  showObjects: []
+  hideObjects: []
+  enableSnowyTextures: 0
+  effectTiming: 2

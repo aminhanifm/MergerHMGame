@@ -71,6 +71,8 @@ namespace Ilumisoft.MergeDice.Survival
         [BoxGroup("Game State")]
         bool gameRunning = false; // Flag to track if game is actively running
         [BoxGroup("Game State")]
+        bool showingDayIntro = false; // Flag to track if day intro is being shown
+        [BoxGroup("Game State")]
         GameTileTracker tileTracker; // Add tracker reference
         ISpawner gameBoardSpawner;
         IGameOverCheck gameOverCheck;
@@ -218,6 +220,13 @@ namespace Ilumisoft.MergeDice.Survival
                 return;
             }
 
+            // If showing day intro, don't run normal game logic
+            if (showingDayIntro)
+            {
+                // Day intro is being shown, wait for player to click "Start Day"
+                return;
+            }
+
             // Check for game over conditions
             if (timesUp || resourcesDepleted)
             {
@@ -252,22 +261,24 @@ namespace Ilumisoft.MergeDice.Survival
             // Clear any accumulated time bonuses from previous games
             survivalTimer.ClearAccumulatedBonus();
             
-            // Reset survival resources (will be uncommented when SurvivalResources is ready)
+            // Reset survival resources but DON'T start decay yet (wait for intro to complete)
             if (survivalResources != null)
             {
                 survivalResources.ResetResources();
-                survivalResources.StartResourceDecay();
+                // survivalResources.StartResourceDecay(); // Moved to OnDayIntroCompleted
             }
             
+            // DON'T start the timer yet - wait for day intro to complete
             // Use quest-specific time limit if available, otherwise default to 60 seconds
-            float timeLimit = questSystem.GetCurrentQuestTimeLimit();
-            if (timeLimit <= 0) timeLimit = 60f; // Default fallback
+            // float timeLimit = questSystem.GetCurrentQuestTimeLimit();
+            // if (timeLimit <= 0) timeLimit = 60f; // Default fallback
+            // survivalTimer.StartTimer(timeLimit); // Moved to OnDayIntroCompleted
             
-            survivalTimer.StartTimer(timeLimit);
             questCompleted = false;
             resourcesDepleted = false;
             timesUp = false;
             waitingForNextDay = false;
+            showingDayIntro = true; // Start with day intro showing
             gameRunning = true; // Start the game logic in Update
             yield return null;
         }
@@ -289,8 +300,8 @@ namespace Ilumisoft.MergeDice.Survival
             
             while (gameRunning)
             {
-                // Unlimited mode: reset board if no moves and not in waiting state
-                if (unlimitedMode && gameOverCheck.IsGameOver() && !waitingForNextDay)
+                // Unlimited mode: reset board if no moves and not in waiting state or showing intro
+                if (unlimitedMode && gameOverCheck.IsGameOver() && !waitingForNextDay && !showingDayIntro)
                 {
                     NotificationEvents.Send(new NotificationMessage("No moves left"));
                     yield return new WaitForSeconds(1f);
@@ -324,8 +335,8 @@ namespace Ilumisoft.MergeDice.Survival
                     continue; // restart loop
                 }
 
-                // Only wait for input and execute operations if not waiting for next day
-                if (!waitingForNextDay)
+                // Only wait for input and execute operations if not waiting for next day and not showing intro
+                if (!waitingForNextDay && !showingDayIntro)
                 {
                     yield return WaitForInputOrTimesUp();
                     if (gameRunning) // Check if game is still running after waiting
@@ -335,7 +346,7 @@ namespace Ilumisoft.MergeDice.Survival
                 }
                 else
                 {
-                    // When waiting for next day, just yield and let Update handle the logic
+                    // When waiting for next day or showing intro, just yield and let Update handle the logic
                     yield return null;
                 }
             }
@@ -390,18 +401,12 @@ namespace Ilumisoft.MergeDice.Survival
 
         void OnNewDayStarted()
         {
-            // Restart timer for new quest with accumulated bonuses and quest-specific time limit
-            // Skip only if this is the very first call during game initialization
+            // DON'T start timer here anymore - the day intro will handle it
+            // Just log that a new day started and show intro flag
             if (questCompleted || questSystem.Day > 1)
             {
-                float timeLimit = questSystem.GetCurrentQuestTimeLimit();
-                if (timeLimit <= 0) timeLimit = 60f; // Default fallback
-                
-                // Read the bonus BEFORE calling StartTimer (which resets it to 0)
-                float bonusTime = survivalTimer.AccumulatedTimeBonus;
-                survivalTimer.StartTimer(timeLimit);
-                
-                Debug.Log($"New quest started with time limit: {timeLimit + bonusTime:F1} seconds (base: {timeLimit}, bonus: {bonusTime:F1})");
+                showingDayIntro = true; // Show intro for new day
+                Debug.Log($"New day started: Day {questSystem.Day} - Showing intro");
             }
         }
 
@@ -418,10 +423,38 @@ namespace Ilumisoft.MergeDice.Survival
                     questSystem.NextDay();
                     Debug.Log($"Player clicked Next - Moving to Day {questSystem.Day}");
                     
-                    // Reset the waiting state so the game can continue
+                    // Set flag to show day intro instead of immediately starting gameplay
+                    showingDayIntro = true;
                     waitingForNextDay = false;
                     questCompleted = false; // This will be set again when next quest completes
                 }
+            }
+        }
+
+        /// <summary>
+        /// Call this method when the day intro is completed and player clicks "Start Day"
+        /// </summary>
+        public void OnDayIntroCompleted()
+        {
+            if (showingDayIntro && gameRunning)
+            {
+                showingDayIntro = false;
+                
+                // NOW start the timer for the current quest
+                float timeLimit = questSystem.GetCurrentQuestTimeLimit();
+                if (timeLimit <= 0) timeLimit = survivalTimer.TimeLimit; // Default fallback
+                
+                // Read any accumulated bonus time before starting
+                float bonusTime = survivalTimer.AccumulatedTimeBonus;
+                survivalTimer.StartTimer(timeLimit);
+                
+                // Start survival resources decay
+                if (survivalResources != null)
+                {
+                    survivalResources.StartResourceDecay();
+                }
+                
+                Debug.Log($"Day {questSystem.Day} intro completed - Starting gameplay with {timeLimit + bonusTime:F1}s timer (base: {timeLimit}, bonus: {bonusTime:F1})");
             }
         }
 

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Day 6
   m_EditorClassIdentifier: 
   title: Day 6
-  description: 
+  description: Now, we need to make storage for the crops, let's make food box
   requirements:
   - tileLevel: 3
     targetAmount: 2
@@ -23,3 +23,21 @@ MonoBehaviour:
     targetAmount: 4
   - tileLevel: 0
     targetAmount: 2
+  timeLimit: 0
+  priority: 0
+  canBeSkipped: 0
+  scoreReward: 0
+  timeBonus: 0
+  eventObjectNames: []
+  unlockAnimationObjectNames:
+  - Food Box
+  showObjectNames: []
+  showObjectsTiming: 2
+  hideObjectNames: []
+  hideObjectsTiming: 2
+  eventObjects: []
+  unlockAnimationObjects: []
+  showObjects: []
+  hideObjects: []
+  enableSnowyTextures: 0
+  effectTiming: 2
