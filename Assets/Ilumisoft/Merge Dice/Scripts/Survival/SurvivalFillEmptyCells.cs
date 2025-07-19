@@ -7,12 +7,12 @@ namespace Ilumisoft.MergeDice.Survival
 {
     public class SurvivalFillEmptyCells : IOperation
     {
-        IGameGrid grid;
+        GameBoard gameBoard; // Change to GameBoard for proper scaling
         SurvivalGameTileFactory survivalFactory;
 
         public SurvivalFillEmptyCells(GameBoard gameBoard, SurvivalGameTileFactory factory)
         {
-            this.grid = gameBoard;
+            this.gameBoard = gameBoard;
             this.survivalFactory = factory;
         }
 
@@ -27,11 +27,11 @@ namespace Ilumisoft.MergeDice.Survival
         {
             List<Vector2Int> emptyCells = new List<Vector2Int>();
 
-            for (int x = 0; x < grid.Width; x++)
+            for (int x = 0; x < gameBoard.Width; x++)
             {
-                for (int y = 0; y < grid.Height; y++)
+                for (int y = 0; y < gameBoard.Height; y++)
                 {
-                    var raycast = new GameTileRaycast(grid.GetPosition(x, y), Vector2.zero, 0);
+                    var raycast = new GameTileRaycast(gameBoard.GetPosition(x, y), Vector2.zero, 0);
 
                     if (!raycast.Perform(out _))
                     {
@@ -53,14 +53,14 @@ namespace Ilumisoft.MergeDice.Survival
 
         void SpawnCell(Vector2Int cell)
         {
-            Vector3 position = grid.GetPosition(cell.x, cell.y);
+            Vector3 position = gameBoard.GetPosition(cell.x, cell.y);
             
-            // Use balanced level generation for better gameplay
+            Debug.Log($"Spawning tile at {position} in SurvivalFillEmptyCells");
+            
+            // Use the survival factory directly - it now handles scaling and distribution
             var tile = survivalFactory.Spawn(position);
-            if (tile is DiceGameTile diceTile)
-            {
-                diceTile.CurrentLevel = survivalFactory.GetBalancedLevel();
-            }
+            
+            // The level and scaling are already set by the factory's Spawn method
         }
     }
 }

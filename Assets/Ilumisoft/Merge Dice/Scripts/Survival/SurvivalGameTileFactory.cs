@@ -20,10 +20,20 @@ namespace Ilumisoft.MergeDice.Survival
         GameTileManager GameTileManager => GameTileManager.Instance;
 
         GameObject gameTileContainer;
+        
+        // Reference to the survival game mode for distribution settings
+        private SurvivalGameMode survivalGameMode;
 
         void Awake()
         {
             this.gameTileContainer = new GameObject("Survival Game Tiles");
+            
+            // Find the survival game mode
+            survivalGameMode = FindAnyObjectByType<SurvivalGameMode>();
+            if (survivalGameMode == null)
+            {
+                Debug.LogWarning("SurvivalGameTileFactory: Could not find SurvivalGameMode. Using fallback distribution.");
+            }
         }
 
         public override GameTile Spawn(Vector3 position)
@@ -40,7 +50,21 @@ namespace Ilumisoft.MergeDice.Survival
             // Set a strategic level for better gameplay
             if (gameTile is DiceGameTile diceTile)
             {
-                diceTile.CurrentLevel = GetStrategicLevel();
+                int targetLevel = GetStrategicLevel();
+                Debug.Log($"SurvivalGameTileFactory: Setting tile to level {targetLevel}");
+                diceTile.CurrentLevel = targetLevel;
+                Debug.Log($"SurvivalGameTileFactory: After setting, tile CurrentLevel = {diceTile.CurrentLevel}, MaxLevel = {diceTile.MaxLevel}");
+            }
+
+            // Apply proper cell scale like GameBoard does
+            var gameBoard = FindAnyObjectByType<GameBoard>();
+            if (gameBoard != null)
+            {
+                gameTile.transform.localScale = Vector3.one * gameBoard.CellSize;
+            }
+            else
+            {
+                Debug.LogWarning("SurvivalGameTileFactory: Could not find GameBoard to apply cell scale!");
             }
 
             GameTileManager.Register(gameTile);
@@ -53,18 +77,32 @@ namespace Ilumisoft.MergeDice.Survival
         /// </summary>
         private int GetStrategicLevel()
         {
-            // Use weighted probability to favor lower levels
+            // If we have a reference to the survival game mode, use its distribution settings
+            if (survivalGameMode != null)
+            {
+                // Use the same distribution logic as the game mode
+                int level = survivalGameMode.GetDistributedLevel();
+                Debug.Log($"SurvivalGameTileFactory: Using game mode distribution, got level {level}");
+                return level;
+            }
+            
+            Debug.Log("SurvivalGameTileFactory: No game mode reference, using fallback distribution");
+            // Fallback to original logic if no game mode reference
             float randomValue = Random.value;
             
             if (randomValue < lowLevelBias)
             {
                 // Heavily favor levels 0-1 for easy combinations
-                return Random.Range(0, 2);
+                int level = Random.Range(0, 2);
+                Debug.Log($"SurvivalGameTileFactory: Fallback low bias, got level {level}");
+                return level;
             }
             else
             {
                 // Occasionally spawn higher levels but cap them
-                return Random.Range(0, Mathf.Min(maxRandomLevel + 1, 5));
+                int level = Random.Range(0, Mathf.Min(maxRandomLevel + 1, 5));
+                Debug.Log($"SurvivalGameTileFactory: Fallback high level, got level {level}");
+                return level;
             }
         }
 

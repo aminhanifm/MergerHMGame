@@ -18,7 +18,7 @@ MonoBehaviour:
   - tileLevel: 0
     targetAmount: 10
   - tileLevel: 4
-    targetAmount: 8
+    targetAmount: 10
   - tileLevel: 3
     targetAmount: 6
   - tileLevel: 1

@@ -17,15 +17,11 @@ MonoBehaviour:
     it to a bag
   requirements:
   - tileLevel: 0
-    targetAmount: 6
-  - tileLevel: 1
-    targetAmount: 3
-  - tileLevel: 3
-    targetAmount: 4
-  - tileLevel: 4
-    targetAmount: 5
-  - tileLevel: 2
-    targetAmount: 2
+    targetAmount: 20
+  - tileLevel: 6
+    targetAmount: 20
+  - tileLevel: 5
+    targetAmount: 20
   timeLimit: 0
   priority: 0
   canBeSkipped: 0

@@ -15,12 +15,12 @@ MonoBehaviour:
   title: Day 4
   description: We need a shovel to prepare for making a farm plot
   requirements:
+  - tileLevel: 1
+    targetAmount: 20
+  - tileLevel: 4
+    targetAmount: 15
   - tileLevel: 3
-    targetAmount: 3
-  - tileLevel: 0
-    targetAmount: 4
-  - tileLevel: 2
-    targetAmount: 3
+    targetAmount: 15
   timeLimit: 0
   priority: 0
   canBeSkipped: 0

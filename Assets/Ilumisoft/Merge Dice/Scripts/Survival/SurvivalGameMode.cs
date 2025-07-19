@@ -89,7 +89,7 @@ namespace Ilumisoft.MergeDice.Survival
         
         [BoxGroup("Tile Generation")]
         [Tooltip("Choose how dice levels are distributed when spawning")]
-        public TileDistributionMode distributionMode = TileDistributionMode.LowLevelBias;
+        public TileDistributionMode distributionMode = TileDistributionMode.EvenDistribution;
         
         [BoxGroup("Tile Generation")]
         [ShowIf("distributionMode", TileDistributionMode.LowLevelBias)]
@@ -112,12 +112,32 @@ namespace Ilumisoft.MergeDice.Survival
         private string tileGenerationInfo = "See InfoBox above for distribution details.";
 
         [BoxGroup("Tile Generation Debug")]
-        [Button("Test Distribution (100 samples)")]
+        [ShowInInspector, ReadOnly]
+        private bool enableDistributionDebug = false;
+
+        [BoxGroup("Tile Generation Debug")]
+        [Button("Toggle Debug Logging")]
+        [GUIColor(0.7f, 1f, 0.7f)]
+        private void ToggleDebugLogging()
+        {
+            // Toggle debug logging for distribution
+            enableDistributionDebug = !enableDistributionDebug;
+            Debug.Log($"Distribution debug logging: {(enableDistributionDebug ? "ENABLED" : "DISABLED")}");
+        }
+
+        [BoxGroup("Tile Generation Debug")]
+        [Button("Test Distribution (1000 samples)")]
         [GUIColor(0.7f, 0.7f, 1f)]
         private void TestDistribution()
         {
             var results = new Dictionary<int, int>();
-            int samples = 100;
+            int samples = 1000;
+            
+            // Test the actual distribution method being used
+            int actualMaxLevel = GetDynamicMaxLevel();
+            int maxLevel = Mathf.Min(maxTileLevel, actualMaxLevel);
+            
+            Debug.Log($"Testing {distributionMode} with maxLevel: {maxLevel} (actualMaxLevel: {actualMaxLevel}, maxTileLevel: {maxTileLevel})");
             
             for (int i = 0; i < samples; i++)
             {
@@ -126,13 +146,78 @@ namespace Ilumisoft.MergeDice.Survival
             }
             
             Debug.Log($"Distribution test for {distributionMode} ({samples} samples):");
+            float expectedPercentage = 100f / (maxLevel + 1);
+            Debug.Log($"Expected percentage per level (if even): {expectedPercentage:F1}%");
+            
+            foreach (var kvp in results.OrderBy(x => x.Key))
+            {
+                float percentage = (kvp.Value / (float)samples) * 100f;
+                float deviation = Mathf.Abs(percentage - expectedPercentage);
+                Debug.Log($"Level {kvp.Key}: {kvp.Value} times ({percentage:F1}%) - Deviation: {deviation:F1}%");
+            }
+            
+            // Also test the raw Random.Range method directly
+            Debug.Log("\n--- Direct Random.Range test ---");
+            var directResults = new Dictionary<int, int>();
+            for (int i = 0; i < samples; i++)
+            {
+                int level = Random.Range(0, maxLevel + 1);
+                directResults[level] = directResults.GetValueOrDefault(level, 0) + 1;
+            }
+            
+            Debug.Log($"Direct Random.Range(0, {maxLevel + 1}) test:");
+            foreach (var kvp in directResults.OrderBy(x => x.Key))
+            {
+                float percentage = (kvp.Value / (float)samples) * 100f;
+                float deviation = Mathf.Abs(percentage - expectedPercentage);
+                Debug.Log($"Level {kvp.Key}: {kvp.Value} times ({percentage:F1}%) - Deviation: {deviation:F1}%");
+            }
+        }
+
+        [BoxGroup("Tile Generation Debug")]
+        [Button("Test New Tile Distribution")]
+        [GUIColor(0.7f, 1f, 1f)]
+        private void TestNewTileDistribution()
+        {
+            if (!Application.isPlaying)
+            {
+                Debug.LogWarning("This test only works in play mode!");
+                return;
+            }
+
+            var factory = FindAnyObjectByType<SurvivalGameTileFactory>();
+            if (factory == null)
+            {
+                Debug.LogError("SurvivalGameTileFactory not found!");
+                return;
+            }
+
+            var results = new Dictionary<int, int>();
+            int samples = 100;
+
+            Debug.Log($"Testing new tile spawning distribution ({samples} samples):");
+            Debug.Log($"Current distribution mode: {distributionMode}");
+
+            for (int i = 0; i < samples; i++)
+            {
+                int level = GetDistributedLevel();
+                results[level] = results.GetValueOrDefault(level, 0) + 1;
+            }
+
+            int actualMaxLevel = GetDynamicMaxLevel();
+            int maxLevel = Mathf.Min(maxTileLevel, actualMaxLevel);
+            float expectedPercentage = 100f / (maxLevel + 1);
+
+            Debug.Log($"Results (maxLevel: {maxLevel}, expected per level if even: {expectedPercentage:F1}%):");
             foreach (var kvp in results.OrderBy(x => x.Key))
             {
                 float percentage = (kvp.Value / (float)samples) * 100f;
                 Debug.Log($"Level {kvp.Key}: {kvp.Value} times ({percentage:F1}%)");
             }
+
+            Debug.Log("This distribution will now be used for new tiles spawned after merges!");
         }
-        
+
         [BoxGroup("Tile Generation Debug")]
         [Button("Reset Board with New Distribution")]
         [GUIColor(1f, 0.7f, 0.7f)]
@@ -167,12 +252,27 @@ namespace Ilumisoft.MergeDice.Survival
             gameBoardSpawner = new DefaultGameBoardSpawner(gameBoard);
             gameOverCheck = new DefaultGameOverCheck(gameBoard);
             
-            // Setup operations - we'll modify the existing MergeSelection behavior
+            // Get the survival game tile factory
+            var survivalFactory = gameBoard.GetComponent<SurvivalGameTileFactory>();
+            if (survivalFactory == null)
+            {
+                survivalFactory = FindAnyObjectByType<SurvivalGameTileFactory>();
+            }
+            
+            // Setup operations - use SurvivalFillEmptyCells instead of regular FillEmptyCells
             operations.Clear();
             operations.Add(new ProcessInput(gameBoard, selection));
             operations.Add(new SurvivalMergeSelection(gameBoard, selection));
             operations.Add(new ProcessVerticalMovement(gameBoard));
-            operations.Add(new FillEmptyCells(gameBoard));
+            if (survivalFactory != null)
+            {
+                operations.Add(new SurvivalFillEmptyCells(gameBoard, survivalFactory));
+            }
+            else
+            {
+                Debug.LogError("SurvivalGameTileFactory not found! Using regular FillEmptyCells as fallback.");
+                operations.Add(new FillEmptyCells(gameBoard));
+            }
             
             tileTracker = GameObject.FindAnyObjectByType<GameTileTracker>();
         }
@@ -490,6 +590,11 @@ namespace Ilumisoft.MergeDice.Survival
             int actualMaxLevel = GetDynamicMaxLevel();
             int maxLevel = Mathf.Min(maxTileLevel, actualMaxLevel);
 
+            if (enableDistributionDebug)
+            {
+                Debug.Log($"GetStrategicLevel: distributionMode={distributionMode}, maxLevel={maxLevel} (actualMax={actualMaxLevel}, tileMax={maxTileLevel})");
+            }
+
             return distributionMode switch
             {
                 TileDistributionMode.EvenDistribution => GetEvenDistributionLevel(maxLevel),
@@ -501,10 +606,29 @@ namespace Ilumisoft.MergeDice.Survival
             };
         }
 
+        /// <summary>
+        /// Public method for external systems (like SurvivalGameTileFactory) to get strategic levels
+        /// using the same distribution logic as the game mode
+        /// </summary>
+        public int GetDistributedLevel()
+        {
+            return GetStrategicLevel();
+        }
+
         private int GetEvenDistributionLevel(int maxLevel)
         {
             // Equal probability for all levels from 0 to maxLevel
-            return Random.Range(0, maxLevel + 1);
+            // Unity's Random.Range(int min, int max) is inclusive of min, exclusive of max
+            // So Random.Range(0, maxLevel + 1) gives us [0, maxLevel] inclusive
+            int level = Random.Range(0, maxLevel + 1);
+            
+            // Debug logging for troubleshooting
+            if (enableDistributionDebug)
+            {
+                Debug.Log($"EvenDistribution: maxLevel={maxLevel}, generated level={level}");
+            }
+            
+            return level;
         }
 
         private int GetLowLevelBiasLevel(int maxLevel)
@@ -512,15 +636,30 @@ namespace Ilumisoft.MergeDice.Survival
             // Original low-level bias logic
             float randomValue = Random.value;
             
+            if (enableDistributionDebug)
+            {
+                Debug.Log($"GetLowLevelBiasLevel: randomValue={randomValue:F3}, lowLevelBias={lowLevelBias:F3}");
+            }
+            
             if (randomValue < lowLevelBias)
             {
                 // Heavily favor levels 0-1 for easy combinations
-                return Random.Range(0, 2);
+                int level = Random.Range(0, 2);
+                if (enableDistributionDebug)
+                {
+                    Debug.Log($"GetLowLevelBiasLevel: Using low bias, generated level {level}");
+                }
+                return level;
             }
             else
             {
                 // Occasionally spawn higher levels
-                return Random.Range(0, maxLevel + 1);
+                int level = Random.Range(0, maxLevel + 1);
+                if (enableDistributionDebug)
+                {
+                    Debug.Log($"GetLowLevelBiasLevel: Using high levels, generated level {level} (range 0-{maxLevel})");
+                }
+                return level;
             }
         }
 
@@ -602,6 +741,8 @@ namespace Ilumisoft.MergeDice.Survival
             {
                 if (tile is DiceGameTile diceTile && !diceTile.IsDestroyed)
                 {
+                    if (enableDistributionDebug)
+                        Debug.Log($"Found dice tile with MaxLevel: {diceTile.MaxLevel}");
                     return diceTile.MaxLevel;
                 }
             }
@@ -609,10 +750,14 @@ namespace Ilumisoft.MergeDice.Survival
             // Use DiceLevelManager for max level
             if (DiceLevelManager.Instance != null)
             {
+                if (enableDistributionDebug)
+                    Debug.Log($"Using DiceLevelManager MaxLevel: {DiceLevelManager.Instance.MaxLevel}");
                 return DiceLevelManager.Instance.MaxLevel;
             }
             
             // Final fallback: use the configured maxTileLevel
+            if (enableDistributionDebug)
+                Debug.Log($"Using fallback maxTileLevel: {maxTileLevel}");
             return maxTileLevel;
         }
     }

@@ -15,14 +15,14 @@ MonoBehaviour:
   title: Day 6
   description: Now, we need to make storage for the crops, let's make food box
   requirements:
-  - tileLevel: 3
-    targetAmount: 2
+  - tileLevel: 1
+    targetAmount: 20
   - tileLevel: 4
-    targetAmount: 3
-  - tileLevel: 2
-    targetAmount: 4
-  - tileLevel: 0
-    targetAmount: 2
+    targetAmount: 10
+  - tileLevel: 5
+    targetAmount: 10
+  - tileLevel: 8
+    targetAmount: 20
   timeLimit: 0
   priority: 0
   canBeSkipped: 0

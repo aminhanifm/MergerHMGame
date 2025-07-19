@@ -15,16 +15,12 @@ MonoBehaviour:
   title: Day 7
   description: I got tripped last night, need to craft some medkit
   requirements:
-  - tileLevel: 1
-    targetAmount: 4
-  - tileLevel: 5
-    targetAmount: 2
   - tileLevel: 0
-    targetAmount: 2
-  - tileLevel: 3
-    targetAmount: 3
-  - tileLevel: 4
-    targetAmount: 3
+    targetAmount: 20
+  - tileLevel: 1
+    targetAmount: 25
+  - tileLevel: 5
+    targetAmount: 15
   timeLimit: 0
   priority: 0
   canBeSkipped: 0

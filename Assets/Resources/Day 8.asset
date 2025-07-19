@@ -15,16 +15,14 @@ MonoBehaviour:
   title: Day 8
   description: There's a rabbit nearby, we need to craft the trap to catch it
   requirements:
-  - tileLevel: 0
-    targetAmount: 2
   - tileLevel: 1
-    targetAmount: 2
-  - tileLevel: 3
-    targetAmount: 2
+    targetAmount: 20
   - tileLevel: 4
-    targetAmount: 4
+    targetAmount: 20
   - tileLevel: 5
-    targetAmount: 3
+    targetAmount: 15
+  - tileLevel: 8
+    targetAmount: 20
   timeLimit: 0
   priority: 0
   canBeSkipped: 0

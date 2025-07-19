@@ -7,6 +7,7 @@ namespace Ilumisoft.MergeDice
     public class DiceLevelBehaviour : LevelUpBehaviour
     {
         int currentLevel = 0;
+        bool levelSetByFactory = false; // Track if level was explicitly set
 
         public override int MaxLevel => DiceLevelManager.Instance != null ? DiceLevelManager.Instance.MaxLevel : 5;
 
@@ -14,17 +15,26 @@ namespace Ilumisoft.MergeDice
 
         private void Start()
         {
-            // Check if we're in survival mode for better tile distribution
-            var survivalMode = FindFirstObjectByType<Survival.SurvivalGameMode>();
-            if (survivalMode != null)
+            // Only set random level if the level hasn't been explicitly set by a factory
+            if (!levelSetByFactory)
             {
-                // Use survival-friendly random generation
-                CurrentLevel = GetSurvivalRandomLevel();
+                // Check if we're in survival mode for better tile distribution
+                var survivalMode = FindFirstObjectByType<Survival.SurvivalGameMode>();
+                if (survivalMode != null)
+                {
+                    // Use survival-friendly random generation
+                    CurrentLevel = GetSurvivalRandomLevel();
+                }
+                else
+                {
+                    // Use standard random generation
+                    CurrentLevel = Random.Range(0, GameStats.MaxReachedLevel + 1);
+                }
             }
             else
             {
-                // Use standard random generation
-                CurrentLevel = Random.Range(0, GameStats.MaxReachedLevel + 1);
+                // Level was already set by a factory, don't override it
+                Debug.Log($"DiceLevelBehaviour: Level explicitly set to {currentLevel} by factory, not overriding");
             }
         }
 
@@ -52,6 +62,8 @@ namespace Ilumisoft.MergeDice
             set
             {
                 currentLevel = Mathf.Clamp(value, 0, MaxLevel);
+                levelSetByFactory = true; // Mark that level was explicitly set
+                Debug.Log($"DiceLevelBehaviour: Level set to {currentLevel} (clamped from {value})");
 
                 OnLevelChanged?.Invoke();
             }

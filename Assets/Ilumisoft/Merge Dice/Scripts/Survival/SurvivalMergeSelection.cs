@@ -115,12 +115,52 @@ namespace Ilumisoft.MergeDice.Survival
             var questTracker = Object.FindFirstObjectByType<GameTileTracker>();
             if (questTracker != null && !questTracker.ignoreTracking)
             {
+                // Store requirement progress before updating
+                var questProgress = questTracker.QuestSystem?.CurrentQuestProgress;
+                var requirementsBefore = new int[questProgress?.requirements.Length ?? 0];
+                
+                if (questProgress != null)
+                {
+                    for (int i = 0; i < questProgress.requirements.Length; i++)
+                    {
+                        requirementsBefore[i] = questProgress.requirements[i].currentAmount;
+                    }
+                }
+
+                // Progress the quest for each tile
                 for (int i = 0; i < selection.Count; i++)
                 {
                     var tile = selection.Get(i);
                     if (tile is DiceGameTile diceTile)
                     {
                         questTracker.QuestSystem?.ProgressQuest(diceTile.CurrentLevel, 1);
+                    }
+                }
+
+                // Check if any requirements were completed after the update
+                if (questProgress != null)
+                {
+                    bool anyRequirementCompleted = false;
+                    
+                    for (int i = 0; i < questProgress.requirements.Length; i++)
+                    {
+                        int currentAmount = questProgress.requirements[i].currentAmount;
+                        int targetAmount = questProgress.requirements[i].targetAmount;
+                        int previousAmount = requirementsBefore[i];
+                        
+                        // Check if this requirement was just completed
+                        if (previousAmount < targetAmount && currentAmount >= targetAmount)
+                        {
+                            anyRequirementCompleted = true;
+                            Debug.Log($"Quest requirement completed: Level {questProgress.requirements[i].tileLevel} ({currentAmount}/{targetAmount})");
+                            break;
+                        }
+                    }
+
+                    // Play special SFX if any requirement was completed
+                    if (anyRequirementCompleted)
+                    {
+                        GameEvents<SFXEventType>.Trigger(SFXEventType.MergedSix);
                     }
                 }
             }
