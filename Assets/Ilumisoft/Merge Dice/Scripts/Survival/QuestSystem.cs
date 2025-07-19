@@ -254,6 +254,44 @@ namespace Ilumisoft.MergeDice.Survival
             OnQuestChanged?.Invoke(CurrentQuest);
         }
 
+        public void CompleteCurrentQuestDebug()
+        {
+            if (CurrentQuest == null || CurrentQuestProgress == null)
+                return;
+                
+            Debug.Log("Debug: Completing current quest");
+                
+            // Complete all requirements
+            for (int i = 0; i < CurrentQuest.requirements.Length; i++)
+            {
+                CurrentQuest.requirements[i].currentAmount = CurrentQuest.requirements[i].targetAmount;
+                CurrentQuestProgress.requirements[i].currentAmount = CurrentQuestProgress.requirements[i].targetAmount;
+            }
+            
+            OnQuestChanged?.Invoke(CurrentQuest);
+            
+            // Trigger quest completion manually
+            if (CurrentQuestProgress.IsComplete)
+            {
+                // Award score reward if applicable
+                if (CurrentQuestProgress.scoreReward > 0)
+                {
+                    OnScoreReward?.Invoke(CurrentQuestProgress.scoreReward);
+                    Debug.Log($"Debug: Score reward granted: {CurrentQuestProgress.scoreReward}");
+                }
+
+                // Award time bonus if applicable  
+                if (CurrentQuestProgress.timeBonus > 0)
+                {
+                    OnTimeBonus?.Invoke(CurrentQuestProgress.timeBonus);
+                    Debug.Log($"Debug: Time bonus granted: {CurrentQuestProgress.timeBonus} seconds");
+                }
+
+                OnQuestCompleted?.Invoke();
+                Debug.Log("Debug: Quest completion event triggered");
+            }
+        }
+
         public void ResetDay()
         {
             Day = 1;

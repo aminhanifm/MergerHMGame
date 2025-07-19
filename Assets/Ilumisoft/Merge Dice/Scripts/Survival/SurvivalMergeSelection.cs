@@ -28,6 +28,9 @@ namespace Ilumisoft.MergeDice.Survival
                 yield break;
             }
 
+            // Check for food and water dice BEFORE processing
+            CheckForResourceDice();
+
             // Progress quest for all selected tiles BEFORE destroying them
             ProgressQuestForSelection();
 
@@ -120,6 +123,51 @@ namespace Ilumisoft.MergeDice.Survival
                         questTracker.QuestSystem?.ProgressQuest(diceTile.CurrentLevel, 1);
                     }
                 }
+            }
+        }
+
+        private void CheckForResourceDice()
+        {
+            // Find the survival game mode to get dice level configuration
+            var survivalGameMode = Object.FindFirstObjectByType<SurvivalGameMode>();
+            if (survivalGameMode == null) return;
+
+            // For now, just log the resource dice found (will be enhanced when SurvivalResources is integrated)
+            int foodDiceCount = 0;
+            int waterDiceCount = 0;
+            int foodLevel = survivalGameMode.foodDiceLevel;
+            int waterLevel = survivalGameMode.waterDiceLevel;
+
+            // Check each selected tile
+            for (int i = 0; i < selection.Count; i++)
+            {
+                var tile = selection.Get(i);
+                if (tile is DiceGameTile diceTile)
+                {
+                    int level = diceTile.CurrentLevel;
+
+                    if (level == foodLevel)
+                    {
+                        foodDiceCount++;
+                    }
+                    else if (level == waterLevel)
+                    {
+                        waterDiceCount++;
+                    }
+                }
+            }
+
+            // Log resource dice merging (will be replaced with actual resource system)
+            if (foodDiceCount > 0)
+            {
+                Debug.Log($"Food dice merged: {foodDiceCount} dice at level {foodLevel}");
+                survivalGameMode.SurvivalResources.OnFoodDiceMerged(foodLevel, foodDiceCount);
+            }
+
+            if (waterDiceCount > 0)
+            {
+                Debug.Log($"Water dice merged: {waterDiceCount} dice at level {waterLevel}");
+                survivalGameMode.SurvivalResources.OnWaterDiceMerged(waterLevel, waterDiceCount);
             }
         }
     }

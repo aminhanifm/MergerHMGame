@@ -20,14 +20,23 @@ MonoBehaviour:
     overlay: {fileID: 3504566316590784757, guid: c177f1f9f101046c3848841000205e2d,
       type: 3}
   - Color: {r: 0.58641315, g: 1, b: 0.36320752, a: 1}
-    overlay: {fileID: -4791088572304565419, guid: effcaa3ccb957472bace81508236df22,
+    overlay: {fileID: 7541102710688269916, guid: 37bb837bef3258340b06b1a046239290,
       type: 3}
   - Color: {r: 0.4764151, g: 0.7620068, b: 1, a: 1}
-    overlay: {fileID: -7763181581059224821, guid: 486e03e8ba87a41feaa94450b5caffab,
+    overlay: {fileID: -6183325591415901180, guid: 5c636eac68018f3409117e2e4aec4ee1,
+      type: 3}
+  - Color: {r: 0.52398545, g: 0.6233572, b: 0.7075472, a: 1}
+    overlay: {fileID: -6139188863875066209, guid: 8e54a954012924042a12e94e7fec7874,
       type: 3}
   - Color: {r: 0.986581, g: 0.5330188, b: 1, a: 1}
-    overlay: {fileID: -291695069047615155, guid: d7c6d1e72bc554ed1982d7ac3b4a9bcb,
+    overlay: {fileID: 4102270532155645258, guid: d9e9e73809c4d9e4182bc84f50249a3f,
       type: 3}
   - Color: {r: 0.5628839, g: 0.5330188, b: 1, a: 1}
-    overlay: {fileID: 4172709776159081545, guid: 292f3d09c24db46f0a76e88ba3ee469e,
+    overlay: {fileID: 7476368180137386384, guid: 0dfa66ab3fe68eb449df58785bf62ac6,
+      type: 3}
+  - Color: {r: 1, g: 0.85009146, b: 0.53333336, a: 1}
+    overlay: {fileID: -1258220891958280603, guid: 30628a3a2c0566e409ede6dfe748ff7c,
+      type: 3}
+  - Color: {r: 1, g: 0.85098046, b: 0.53333336, a: 1}
+    overlay: {fileID: -7939962244657002297, guid: 76ed4cf1a1abd1647a8f00e5ad63004a,
       type: 3}

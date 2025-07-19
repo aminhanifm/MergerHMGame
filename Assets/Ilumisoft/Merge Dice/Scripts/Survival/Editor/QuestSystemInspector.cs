@@ -80,6 +80,17 @@ namespace Ilumisoft.MergeDice.Survival
                 {
                     questSystem.ResetCurrentQuestProgress();
                 }
+                if (GUILayout.Button("Complete Quest"))
+                {
+                    // Complete all requirements for debugging
+                    if (questSystem.CurrentQuestProgress != null)
+                    {
+                        questSystem.CompleteCurrentQuestDebug();
+                    }
+                }
+                EditorGUILayout.EndHorizontal();
+                
+                EditorGUILayout.BeginHorizontal();
                 if (GUILayout.Button("Next Day"))
                 {
                     questSystem.NextDay();

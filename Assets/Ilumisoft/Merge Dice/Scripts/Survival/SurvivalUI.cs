@@ -3,40 +3,60 @@ using UnityEngine;
 using Ilumisoft.MergeDice.Survival;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.UI;
+using Sirenix.OdinInspector;
 
 public class SurvivalUI : MonoBehaviour
 {
+    [BoxGroup("Core References")]
     [Header("References")]
     public SurvivalTimer timer;
+    [BoxGroup("Core References")]
     public QuestSystem questSystem;
-    public SurvivalGameMode gameMode; // Add reference to game mode
+    [BoxGroup("Core References")]
+    public SurvivalGameMode gameMode;
 
+    [BoxGroup("Timer & Quest UI")]
     [Header("UI Elements")]
     public TMP_Text timerText;
+    [BoxGroup("Timer & Quest UI")]
     public TMP_Text questTitleText;
+    [BoxGroup("Timer & Quest UI")]
     public TMP_Text questDescText;
+    [BoxGroup("Timer & Quest UI")]
     public TMP_Text questProgressText;
 
+    [BoxGroup("Survival Resources UI")]
+    [Header("Food & Water UI")]
+    [Tooltip("UI Slider for food level")]
+    public Slider foodSlider;
+    [BoxGroup("Survival Resources UI")]
+    [Tooltip("Text showing food amount")]
+    public TMP_Text foodText;
+    [BoxGroup("Survival Resources UI")]
+    [Tooltip("UI Slider for water level")]
+    public Slider waterSlider;
+    [BoxGroup("Survival Resources UI")]
+    [Tooltip("Text showing water amount")]
+    public TMP_Text waterText;
+
+    [BoxGroup("Progression UI")]
     [Header("Progression UI")]
     public CanvasGroup dayProgressionCanvasGroup; // Assign in inspector instead of GameObject
+    [BoxGroup("Progression UI")]
     public TMP_Text dayProgressionText;
+    [BoxGroup("Progression UI")]
     public UnityEngine.UI.Button nextDayButton;
 
+    [BoxGroup("Unlock Animation")]
     [Header("Unlock Animation")]
     public GameObject objectsParent; // Assign in inspector
-    public GameObject shadowParent;  // Assign in inspector
+    [BoxGroup("Unlock Animation")]
+    [Range(0.1f, 5f)]
     public float flickerDuration = 1.0f;
+    [BoxGroup("Unlock Animation")]
+    [Range(0.01f, 1f)]
     public float flickerInterval = 0.15f;
-
-    private Dictionary<int, int> levelToSpriteIndex = new Dictionary<int, int>
-    {
-        { 0, 5 },
-        { 1, 1 },
-        { 2, 4 },
-        { 3, 0 },
-        { 4, 3 },
-        { 5, 2 }
-    };
 
     private void OnEnable()
     {
@@ -53,6 +73,17 @@ public class SurvivalUI : MonoBehaviour
             questSystem.OnQuestChanged += UpdateQuestUI;
             UpdateQuestUI(questSystem.CurrentQuest);
         }
+
+        // Subscribe to survival resources events (will be uncommented when SurvivalResources is ready)
+        var survivalResources = FindFirstObjectByType<SurvivalResources>();
+        if (survivalResources != null)
+        {
+            survivalResources.OnResourcesChanged += UpdateResourcesUI;
+            survivalResources.OnFoodAdded += OnFoodAdded;
+            survivalResources.OnWaterAdded += OnWaterAdded;
+            // Initialize UI
+            UpdateResourcesUI(survivalResources.CurrentFood, survivalResources.CurrentWater);
+        }
     }
 
     private void OnDisable()
@@ -65,6 +96,15 @@ public class SurvivalUI : MonoBehaviour
         if (questSystem != null)
         {
             questSystem.OnQuestChanged -= UpdateQuestUI;
+        }
+
+        // Unsubscribe from survival resources events
+        var survivalResources = FindFirstObjectByType<SurvivalResources>();
+        if (survivalResources != null)
+        {
+            survivalResources.OnResourcesChanged -= UpdateResourcesUI;
+            survivalResources.OnFoodAdded -= OnFoodAdded;
+            survivalResources.OnWaterAdded -= OnWaterAdded;
         }
     }
 
@@ -113,7 +153,7 @@ public class SurvivalUI : MonoBehaviour
         System.Text.StringBuilder sb = new System.Text.StringBuilder();
         foreach (var req in quest.requirements)
         {
-            int spriteIndex = levelToSpriteIndex.ContainsKey(req.tileLevel) ? levelToSpriteIndex[req.tileLevel] : req.tileLevel;
+            int spriteIndex = req.tileLevel;
             string icon = $"<sprite={spriteIndex}>";
             sb.AppendLine($"{icon} x {req.currentAmount}/{req.targetAmount}");
         }
@@ -129,6 +169,43 @@ public class SurvivalUI : MonoBehaviour
     {
         if (timerText != null)
             timerText.text = "Time's up!";
+    }
+
+    void UpdateResourcesUI(float currentFood, float currentWater)
+    {
+        // Find the survival resources to get max values (placeholder for now)
+        float maxFood = 100f; // This will be retrieved from SurvivalResources when integrated
+        float maxWater = 100f;
+
+        // Update food UI
+        if (foodSlider != null)
+        {
+            foodSlider.value = currentFood / maxFood;
+        }
+        if (foodText != null)
+        {
+            foodText.text = $"Food\n{currentFood:F0}/{maxFood:F0}";
+        }
+
+        // Update water UI
+        if (waterSlider != null)
+        {
+            waterSlider.value = currentWater / maxWater;
+        }
+        if (waterText != null)
+        {
+            waterText.text = $"Water\n{currentWater:F0}/{maxWater:F0}";
+        }
+    }
+
+    void OnFoodAdded(float amount)
+    {
+        // TODO: Add visual feedback for food gained
+    }
+
+    void OnWaterAdded(float amount)
+    {
+        // TODO: Add visual feedback for water gained  
     }
 
     private IEnumerator FadeCanvasGroup(CanvasGroup canvasGroup, float from, float to, float duration)
@@ -205,16 +282,25 @@ public class SurvivalUI : MonoBehaviour
         ShowDayProgression();
         string dayName = $"Day {day}";
         Transform obj = objectsParent?.transform.Find(dayName);
-        Transform shadow = shadowParent?.transform.Find(dayName);
         if (obj != null)
         {
-            StartCoroutine(UnlockRoutine(obj.gameObject, shadow?.gameObject));
+            StartCoroutine(UnlockRoutine(obj.gameObject, null)); // Remove shadow dependency
         }
         else
         {
-            // fallback: just show next day button
-            nextDayButton?.gameObject.SetActive(true);
+            // fallback: show next day button after a delay to ensure game mode is in waiting state
+            StartCoroutine(DelayedShowNextDayButton());
         }
+    }
+
+    private IEnumerator DelayedShowNextDayButton()
+    {
+        // Wait a short time to ensure the game mode has processed the quest completion
+        // and entered the waiting state
+        yield return new WaitForSeconds(1f);
+        
+        if (nextDayButton != null) 
+            nextDayButton.gameObject.SetActive(true);
     }
 
     private IEnumerator UnlockRoutine(GameObject obj, GameObject shadow)
