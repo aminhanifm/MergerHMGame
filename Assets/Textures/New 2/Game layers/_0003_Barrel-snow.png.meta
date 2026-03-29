@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      _0003_Barrel-snow_0: -1866011922885833666
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

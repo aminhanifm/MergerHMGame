@@ -13,30 +13,30 @@ MonoBehaviour:
   m_Name: DiceLevelManager
   m_EditorClassIdentifier: 
   diceLevels:
-  - Color: {r: 1, g: 0.5801887, b: 0.5801887, a: 1}
+  - Color: {r: 0.9339623, g: 0.9339623, b: 0.9339623, a: 1}
     overlay: {fileID: 4817459703740782513, guid: 66856eaafe7804014bbc5e02921f01f3,
       type: 3}
-  - Color: {r: 0.99433964, g: 1, b: 0.5330188, a: 1}
+  - Color: {r: 0.9372549, g: 0.9372549, b: 0.9372549, a: 1}
     overlay: {fileID: 3504566316590784757, guid: c177f1f9f101046c3848841000205e2d,
       type: 3}
-  - Color: {r: 0.7095563, g: 1, b: 0.5518868, a: 1}
+  - Color: {r: 0.9372549, g: 0.9372549, b: 0.9372549, a: 1}
     overlay: {fileID: 7541102710688269916, guid: 37bb837bef3258340b06b1a046239290,
       type: 3}
-  - Color: {r: 0.4764151, g: 0.7620068, b: 1, a: 1}
+  - Color: {r: 0.9372549, g: 0.9372549, b: 0.9372549, a: 1}
     overlay: {fileID: -6183325591415901180, guid: 5c636eac68018f3409117e2e4aec4ee1,
       type: 3}
-  - Color: {r: 0.6650944, g: 0.84710836, b: 1, a: 1}
+  - Color: {r: 0.9372549, g: 0.9372549, b: 0.9372549, a: 1}
     overlay: {fileID: -6139188863875066209, guid: 8e54a954012924042a12e94e7fec7874,
       type: 3}
-  - Color: {r: 0.99205005, g: 0.6462264, b: 1, a: 1}
+  - Color: {r: 0.9372549, g: 0.9372549, b: 0.9372549, a: 1}
     overlay: {fileID: 4102270532155645258, guid: d9e9e73809c4d9e4182bc84f50249a3f,
       type: 3}
-  - Color: {r: 0.7052085, g: 0.6839622, b: 1, a: 1}
+  - Color: {r: 0.9372549, g: 0.9372549, b: 0.9372549, a: 1}
     overlay: {fileID: 7476368180137386384, guid: 0dfa66ab3fe68eb449df58785bf62ac6,
       type: 3}
-  - Color: {r: 1, g: 0.85009146, b: 0.53333336, a: 1}
+  - Color: {r: 0.9372549, g: 0.9372549, b: 0.9372549, a: 1}
     overlay: {fileID: -1258220891958280603, guid: 30628a3a2c0566e409ede6dfe748ff7c,
       type: 3}
-  - Color: {r: 1, g: 0.85098046, b: 0.53333336, a: 1}
+  - Color: {r: 0.9372549, g: 0.9372549, b: 0.9372549, a: 1}
     overlay: {fileID: -7939962244657002297, guid: 76ed4cf1a1abd1647a8f00e5ad63004a,
       type: 3}

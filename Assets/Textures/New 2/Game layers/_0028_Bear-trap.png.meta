@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      _0028_Bear-trap_0: -4405490257804266667
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

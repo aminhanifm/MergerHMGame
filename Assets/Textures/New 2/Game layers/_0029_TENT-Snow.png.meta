@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      _0029_TENT-Snow_0: 1803737462050785352
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

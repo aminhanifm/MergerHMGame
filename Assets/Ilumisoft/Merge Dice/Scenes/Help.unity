@@ -257,7 +257,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.514151, g: 0.5846361, b: 1, a: 1}
+  m_Color: {r: 0.62352943, g: 0.7411765, b: 0.73333335, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -908,7 +908,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.4764151, b: 0.4764151, a: 1}
+  m_Color: {r: 0.64705884, g: 0.13333334, b: 0.21960784, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1089,6 +1089,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RenderPostProcessing
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1842795375047342194, guid: 01ab5a92b39e2d54f8dde607d4c43a2c,
+        type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 311
       objectReference: {fileID: 0}
     - target: {fileID: 3275864416733363181, guid: 01ab5a92b39e2d54f8dde607d4c43a2c,
         type: 3}

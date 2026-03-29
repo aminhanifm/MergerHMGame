@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      _0025_BedRoll_0: -6122302848790493534
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

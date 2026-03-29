@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      _0013_Farm-snow_0: 495171874744676685
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

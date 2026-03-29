@@ -66,5 +66,5 @@
     "explorer.fileNesting.patterns": {
         "*.sln": "*.csproj"
     },
-    "dotnet.defaultSolution": "Merger Game.sln"
+    "dotnet.defaultSolution": "HM Merge Game.slnx"
 }
