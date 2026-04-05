@@ -77,13 +77,13 @@ namespace Ilumisoft.MergeDice
             }
         }
 
-        public Color Color
+        public Sprite Sprite
         {
             get
             {
                 return DiceLevelManager.Instance != null 
-                    ? DiceLevelManager.Instance.GetLevelColor(currentLevel) 
-                    : Color.white;
+                    ? DiceLevelManager.Instance.GetLevelSprite(currentLevel) 
+                    : null;
             }
         }
 

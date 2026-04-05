@@ -45,7 +45,6 @@ public class TileRequirement
     [BoxGroup("Tile Requirement")]
     [ReadOnly]
     [ShowInInspector]
-    [GUIColor("@GetLevelColor()")]
     [PropertyTooltip("Level info with dice visual properties")]
     public string LevelInfo => $"Level {tileLevel} - {targetAmount} required";
     
@@ -59,13 +58,13 @@ public class TileRequirement
         return null;
     }
     
-    private Color GetLevelColor()
+    private Sprite GetLevelSpriteForLevel()
     {
         if (DiceLevelManager.Instance != null && DiceLevelManager.Instance.IsValidLevel(tileLevel))
         {
-            return DiceLevelManager.Instance.GetLevelColor(tileLevel);
+            return DiceLevelManager.Instance.GetLevelSprite(tileLevel);
         }
-        return Color.white;
+        return null;
     }
 }
 

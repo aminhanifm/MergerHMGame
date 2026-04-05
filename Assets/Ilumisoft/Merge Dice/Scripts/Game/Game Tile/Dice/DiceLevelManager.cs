@@ -52,11 +52,11 @@ namespace Ilumisoft.MergeDice
         }
 
         /// <summary>
-        /// Get color for a specific dice level
+        /// Get sprite for a specific dice level
         /// </summary>
-        public Color GetLevelColor(int levelIndex)
+        public Sprite GetLevelSprite(int levelIndex)
         {
-            return GetDiceLevel(levelIndex).Color;
+            return GetDiceLevel(levelIndex).sprite;
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Ilumisoft.MergeDice
         {
             diceLevels.Add(new DiceLevel
             {
-                Color = Color.white,
+                    sprite = null,
                 overlay = null
             });
         }
@@ -116,12 +116,12 @@ namespace Ilumisoft.MergeDice
             diceLevels.Clear();
             diceLevels.AddRange(new DiceLevel[]
             {
-                new DiceLevel { Color = Color.white, overlay = null },
-                new DiceLevel { Color = Color.green, overlay = null },
-                new DiceLevel { Color = Color.blue, overlay = null },
-                new DiceLevel { Color = Color.yellow, overlay = null },
-                new DiceLevel { Color = Color.red, overlay = null },
-                new DiceLevel { Color = Color.magenta, overlay = null }
+                    new DiceLevel { sprite = null, overlay = null },
+                    new DiceLevel { sprite = null, overlay = null },
+                    new DiceLevel { sprite = null, overlay = null },
+                    new DiceLevel { sprite = null, overlay = null },
+                    new DiceLevel { sprite = null, overlay = null },
+                    new DiceLevel { sprite = null, overlay = null }
             });
         }
 
@@ -130,7 +130,7 @@ namespace Ilumisoft.MergeDice
             // Ensure we always have at least one level
             if (diceLevels.Count == 0)
             {
-                diceLevels.Add(new DiceLevel { Color = Color.white, overlay = null });
+                    diceLevels.Add(new DiceLevel { sprite = null, overlay = null });
             }
         }
     }

@@ -25,7 +25,7 @@ namespace Ilumisoft.MergeDice
 
         private void OnLevelChanged()
         {
-            spriteRenderer.color = diceLevelBehaviour.Color;
+            spriteRenderer.sprite = diceLevelBehaviour.Sprite;
             overlay.sprite = diceLevelBehaviour.Overlay;
         }
 

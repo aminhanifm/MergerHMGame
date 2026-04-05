@@ -8,7 +8,12 @@ namespace Ilumisoft.MergeDice
         [SerializeField]
         AbstractGameTileFactory gameTileFactory = null;
 
+        [SerializeField]
+        float tileScale = 0.0f;
+
         public IList<GameTile> GameTiles => GameTileManager.Instance.GameTiles;
+
+        public float TileScale => tileScale > 0.0f ? tileScale : CellSize;
 
         public GameTile Spawn(GameTile prefab, Vector3 position)
         {
@@ -26,7 +31,7 @@ namespace Ilumisoft.MergeDice
 
         private GameTile ApplyCellScale(GameTile gameTile)
         {
-            gameTile.transform.localScale = Vector3.one * CellSize;
+            gameTile.transform.localScale = Vector3.one * TileScale;
 
             return gameTile;
         }

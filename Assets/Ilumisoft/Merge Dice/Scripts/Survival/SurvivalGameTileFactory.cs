@@ -60,7 +60,7 @@ namespace Ilumisoft.MergeDice.Survival
             var gameBoard = FindAnyObjectByType<GameBoard>();
             if (gameBoard != null)
             {
-                gameTile.transform.localScale = Vector3.one * gameBoard.CellSize;
+                gameTile.transform.localScale = Vector3.one * gameBoard.TileScale;
             }
             else
             {
