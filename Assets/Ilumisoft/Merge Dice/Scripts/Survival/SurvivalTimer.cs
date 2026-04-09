@@ -5,7 +5,7 @@ namespace Ilumisoft.MergeDice.Survival
 {
     public class SurvivalTimer : MonoBehaviour
     {
-        public float TimeLimit = 60f;
+        public float TimeLimit = 75f;
         public float TimeLeft { get; private set; }
         public bool IsRunning { get; private set; }
         public float AccumulatedTimeBonus { get; private set; }

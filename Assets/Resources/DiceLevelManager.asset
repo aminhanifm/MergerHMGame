@@ -13,39 +13,38 @@ MonoBehaviour:
   m_Name: DiceLevelManager
   m_EditorClassIdentifier: 
   diceLevels:
-  - sprite: {fileID: -5412956182298251908, guid: d5ff19c4ed2c342a1bb3aec7075dcf0e,
+  - sprite: {fileID: -4066258394851348407, guid: f0387a3a4dbfd4998bc92291121fd435,
       type: 3}
     overlay: {fileID: 4817459703740782513, guid: 66856eaafe7804014bbc5e02921f01f3,
       type: 3}
-  - sprite: {fileID: -7072906071730503462, guid: d5ff19c4ed2c342a1bb3aec7075dcf0e,
+  - sprite: {fileID: -4868912559275221942, guid: f0387a3a4dbfd4998bc92291121fd435,
       type: 3}
     overlay: {fileID: 3504566316590784757, guid: c177f1f9f101046c3848841000205e2d,
       type: 3}
-  - sprite: {fileID: -7911255585435166321, guid: d5ff19c4ed2c342a1bb3aec7075dcf0e,
+  - sprite: {fileID: -7473482086039171696, guid: f0387a3a4dbfd4998bc92291121fd435,
       type: 3}
     overlay: {fileID: 7541102710688269916, guid: 37bb837bef3258340b06b1a046239290,
       type: 3}
-  - sprite: {fileID: 2139347813917642953, guid: d5ff19c4ed2c342a1bb3aec7075dcf0e,
-      type: 3}
+  - sprite: {fileID: 415874200927783988, guid: f0387a3a4dbfd4998bc92291121fd435, type: 3}
     overlay: {fileID: -6183325591415901180, guid: 5c636eac68018f3409117e2e4aec4ee1,
       type: 3}
-  - sprite: {fileID: 4737491025326649310, guid: d5ff19c4ed2c342a1bb3aec7075dcf0e,
+  - sprite: {fileID: -556788184784103175, guid: f0387a3a4dbfd4998bc92291121fd435,
       type: 3}
     overlay: {fileID: -6139188863875066209, guid: 8e54a954012924042a12e94e7fec7874,
       type: 3}
-  - sprite: {fileID: -7062350856651937374, guid: d5ff19c4ed2c342a1bb3aec7075dcf0e,
+  - sprite: {fileID: 3321043484015885956, guid: f0387a3a4dbfd4998bc92291121fd435,
       type: 3}
     overlay: {fileID: 4102270532155645258, guid: d9e9e73809c4d9e4182bc84f50249a3f,
       type: 3}
-  - sprite: {fileID: 5425380422282912888, guid: d5ff19c4ed2c342a1bb3aec7075dcf0e,
+  - sprite: {fileID: -3188142578860343522, guid: f0387a3a4dbfd4998bc92291121fd435,
       type: 3}
     overlay: {fileID: 7476368180137386384, guid: 0dfa66ab3fe68eb449df58785bf62ac6,
       type: 3}
-  - sprite: {fileID: -6329874464857485321, guid: d5ff19c4ed2c342a1bb3aec7075dcf0e,
+  - sprite: {fileID: -5196360889324069685, guid: f0387a3a4dbfd4998bc92291121fd435,
       type: 3}
     overlay: {fileID: -1258220891958280603, guid: 30628a3a2c0566e409ede6dfe748ff7c,
       type: 3}
-  - sprite: {fileID: 3856449892979599027, guid: d5ff19c4ed2c342a1bb3aec7075dcf0e,
+  - sprite: {fileID: 1679746975568692203, guid: f0387a3a4dbfd4998bc92291121fd435,
       type: 3}
     overlay: {fileID: -7939962244657002297, guid: 76ed4cf1a1abd1647a8f00e5ad63004a,
       type: 3}

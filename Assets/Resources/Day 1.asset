@@ -16,13 +16,13 @@ MonoBehaviour:
   description: We need to build campfire for the upcoming night
   requirements:
   - tileLevel: 0
-    targetAmount: 10
+    targetAmount: 4
   - tileLevel: 4
-    targetAmount: 10
+    targetAmount: 4
   - tileLevel: 3
-    targetAmount: 6
+    targetAmount: 3
   - tileLevel: 1
-    targetAmount: 15
+    targetAmount: 6
   timeLimit: 0
   priority: 0
   canBeSkipped: 0

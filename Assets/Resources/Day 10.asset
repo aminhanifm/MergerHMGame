@@ -16,11 +16,11 @@ MonoBehaviour:
   description: There's upcoming snow, we need to craft bedroll fast
   requirements:
   - tileLevel: 0
-    targetAmount: 30
+    targetAmount: 12
   - tileLevel: 6
-    targetAmount: 30
+    targetAmount: 12
   - tileLevel: 5
-    targetAmount: 30
+    targetAmount: 12
   timeLimit: 0
   priority: 0
   canBeSkipped: 0

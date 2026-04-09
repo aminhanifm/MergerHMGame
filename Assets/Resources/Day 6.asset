@@ -16,13 +16,13 @@ MonoBehaviour:
   description: Now, we need to make storage for the crops, let's make food box
   requirements:
   - tileLevel: 1
-    targetAmount: 20
+    targetAmount: 8
   - tileLevel: 4
-    targetAmount: 10
+    targetAmount: 4
   - tileLevel: 5
-    targetAmount: 10
+    targetAmount: 4
   - tileLevel: 8
-    targetAmount: 20
+    targetAmount: 8
   timeLimit: 0
   priority: 0
   canBeSkipped: 0

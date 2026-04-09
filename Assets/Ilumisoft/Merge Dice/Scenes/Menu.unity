@@ -234,8 +234,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1014865199700067234, guid: 20effae0a3de84fc382b5a2dde8d4376,
-    type: 3}
+  m_Sprite: {fileID: -62255099854199989, guid: 2181e0f1c0b4b4f4aafbd7c64bf35d4c, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -800,7 +799,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -3160397305440190666, guid: 20effae0a3de84fc382b5a2dde8d4376,
+  m_Sprite: {fileID: 8030529624149747729, guid: 2181e0f1c0b4b4f4aafbd7c64bf35d4c,
     type: 3}
   m_Type: 0
   m_PreserveAspect: 1
@@ -1141,10 +1140,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1240549741992187090, guid: 20effae0a3de84fc382b5a2dde8d4376,
+  m_Sprite: {fileID: 5378399110420005322, guid: 2181e0f1c0b4b4f4aafbd7c64bf35d4c,
     type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -1227,6 +1226,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Scene Loader
+      objectReference: {fileID: 0}
+    - target: {fileID: 2254387666011593104, guid: 1aa4cd78904cd064fb1f23328b680652,
+        type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 311
       objectReference: {fileID: 0}
     - target: {fileID: 2254387666011593106, guid: 1aa4cd78904cd064fb1f23328b680652,
         type: 3}
@@ -1362,7 +1366,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -9197904816170755652, guid: 20effae0a3de84fc382b5a2dde8d4376,
+  m_Sprite: {fileID: -7464627648075185649, guid: 2181e0f1c0b4b4f4aafbd7c64bf35d4c,
     type: 3}
   m_Type: 0
   m_PreserveAspect: 1

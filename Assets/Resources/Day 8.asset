@@ -16,13 +16,13 @@ MonoBehaviour:
   description: There's a rabbit nearby, we need to craft the trap to catch it
   requirements:
   - tileLevel: 1
-    targetAmount: 20
+    targetAmount: 8
   - tileLevel: 4
-    targetAmount: 20
+    targetAmount: 8
   - tileLevel: 5
-    targetAmount: 15
+    targetAmount: 6
   - tileLevel: 8
-    targetAmount: 20
+    targetAmount: 8
   timeLimit: 0
   priority: 0
   canBeSkipped: 0

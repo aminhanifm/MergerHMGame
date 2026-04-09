@@ -16,11 +16,11 @@ MonoBehaviour:
   description: We need a shovel to prepare for making a farm plot
   requirements:
   - tileLevel: 1
-    targetAmount: 20
+    targetAmount: 8
   - tileLevel: 4
-    targetAmount: 15
+    targetAmount: 6
   - tileLevel: 3
-    targetAmount: 15
+    targetAmount: 6
   timeLimit: 0
   priority: 0
   canBeSkipped: 0

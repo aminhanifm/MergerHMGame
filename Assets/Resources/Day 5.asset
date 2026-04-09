@@ -16,11 +16,11 @@ MonoBehaviour:
   description: Now we need to make a farm to grow some crops
   requirements:
   - tileLevel: 4
-    targetAmount: 10
+    targetAmount: 4
   - tileLevel: 7
-    targetAmount: 25
+    targetAmount: 10
   - tileLevel: 2
-    targetAmount: 15
+    targetAmount: 6
   timeLimit: 0
   priority: 0
   canBeSkipped: 0
