@@ -170,7 +170,7 @@ namespace Ilumisoft.MergeDice.Survival
         {
             // Find the survival game mode to get dice level configuration
             var survivalGameMode = Object.FindFirstObjectByType<SurvivalGameMode>();
-            if (survivalGameMode == null) return;
+            if (survivalGameMode == null || survivalGameMode.SurvivalResources == null || !survivalGameMode.SurvivalResources.AreMechanicsEnabled) return;
 
             // For now, just log the resource dice found (will be enhanced when SurvivalResources is integrated)
             int foodDiceCount = 0;

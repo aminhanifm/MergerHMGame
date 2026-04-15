@@ -28,6 +28,9 @@ public class SurvivalUI : MonoBehaviour
 
     [BoxGroup("Survival Resources UI")]
     [Header("Food & Water UI")]
+    [Tooltip("Optional parent object for the entire food and water UI group")]
+    public GameObject survivalResourcesGroup;
+    [BoxGroup("Survival Resources UI")]
     [Tooltip("UI Slider for food level")]
     public Slider foodSlider;
     [BoxGroup("Survival Resources UI")]
@@ -91,6 +94,8 @@ public class SurvivalUI : MonoBehaviour
     [Range(0.01f, 1f)]
     public float flickerInterval = 0.15f;
 
+    private SurvivalResources survivalResources;
+
     private void OnEnable()
     {
         if (timer != null)
@@ -107,14 +112,14 @@ public class SurvivalUI : MonoBehaviour
             UpdateQuestUI(questSystem.CurrentQuest);
         }
 
-        // Subscribe to survival resources events (will be uncommented when SurvivalResources is ready)
-        var survivalResources = FindFirstObjectByType<SurvivalResources>();
-        if (survivalResources != null)
+        survivalResources = GetSurvivalResources();
+        ConfigureResourcesUI();
+
+        if (survivalResources != null && survivalResources.AreMechanicsEnabled)
         {
             survivalResources.OnResourcesChanged += UpdateResourcesUI;
             survivalResources.OnFoodAdded += OnFoodAdded;
             survivalResources.OnWaterAdded += OnWaterAdded;
-            // Initialize UI
             UpdateResourcesUI(survivalResources.CurrentFood, survivalResources.CurrentWater);
         }
     }
@@ -131,14 +136,14 @@ public class SurvivalUI : MonoBehaviour
             questSystem.OnQuestChanged -= UpdateQuestUI;
         }
 
-        // Unsubscribe from survival resources events
-        var survivalResources = FindFirstObjectByType<SurvivalResources>();
         if (survivalResources != null)
         {
             survivalResources.OnResourcesChanged -= UpdateResourcesUI;
             survivalResources.OnFoodAdded -= OnFoodAdded;
             survivalResources.OnWaterAdded -= OnWaterAdded;
         }
+
+        survivalResources = null;
     }
 
     private void Start()
@@ -244,6 +249,40 @@ public class SurvivalUI : MonoBehaviour
             timerText.text = "Time's up!";
     }
 
+    private SurvivalResources GetSurvivalResources()
+    {
+        if (gameMode != null && gameMode.SurvivalResources != null)
+        {
+            return gameMode.SurvivalResources;
+        }
+
+        return FindFirstObjectByType<SurvivalResources>();
+    }
+
+    private void ConfigureResourcesUI()
+    {
+        bool showResourcesUI = survivalResources != null && survivalResources.AreMechanicsEnabled;
+
+        if (survivalResourcesGroup != null)
+        {
+            survivalResourcesGroup.SetActive(showResourcesUI);
+            return;
+        }
+
+        SetResourceElementActive(foodSlider, showResourcesUI);
+        SetResourceElementActive(foodText, showResourcesUI);
+        SetResourceElementActive(waterSlider, showResourcesUI);
+        SetResourceElementActive(waterText, showResourcesUI);
+    }
+
+    private static void SetResourceElementActive(Component component, bool isActive)
+    {
+        if (component != null)
+        {
+            component.gameObject.SetActive(isActive);
+        }
+    }
+
     void UpdateResourcesUI(float currentFood, float currentWater)
     {
         // Find the survival resources to get max values (placeholder for now)
@@ -303,7 +342,7 @@ public class SurvivalUI : MonoBehaviour
             StartCoroutine(FadeCanvasGroup(dayProgressionCanvasGroup, 0f, 1f, 0.4f));
             if (dayProgressionText != null)
             {
-                dayProgressionText.text = $"Day <b>{questSystem.Day}</b> Complete!";
+                dayProgressionText.text = $"Day <b>{questSystem.Day}/{questSystem.TotalDays}</b> Complete!";
                 // Show progression text that was hidden during intro
                 dayProgressionText.gameObject.SetActive(true);
             }
@@ -385,12 +424,38 @@ public class SurvivalUI : MonoBehaviour
     
     private void HandleGameOver()
     {
+        HideDayProgressionUI();
+
+        if (questSystem != null)
+        {
+            questSystem.TriggerAllQuestsCompleted();
+        }
+
+        if (gameMode != null)
+        {
+            gameMode.TriggerFinalDayGameOver();
+        }
+
         Debug.Log("Game Over - All quests completed!");
-        // You can add game over UI here or trigger game over event
-        // For now, just log the game over state
-        
-        // Optional: Show a game over screen or return to main menu
-        // Example: SceneManager.LoadScene("GameOverScene");
+    }
+
+    private void HideDayProgressionUI()
+    {
+        if (nextDayButton != null)
+        {
+            nextDayButton.gameObject.SetActive(false);
+        }
+
+        if (dayProgressionText != null)
+        {
+            dayProgressionText.gameObject.SetActive(false);
+        }
+
+        if (dayProgressionCanvasGroup != null)
+        {
+            dayProgressionCanvasGroup.alpha = 0f;
+            dayProgressionCanvasGroup.gameObject.SetActive(false);
+        }
     }
     
     private IEnumerator ShowDayIntroAfterDelay()
@@ -538,7 +603,7 @@ public class SurvivalUI : MonoBehaviour
             // Update intro texts
             if (dayIntroTitleText != null)
             {
-                dayIntroTitleText.text = $"Day {questSystem.Day}";
+                dayIntroTitleText.text = $"Day {questSystem.Day}/{questSystem.TotalDays}";
             }
             
             if (dayIntroQuestTitleText != null)

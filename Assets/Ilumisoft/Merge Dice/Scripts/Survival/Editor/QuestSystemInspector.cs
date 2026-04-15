@@ -10,6 +10,8 @@ namespace Ilumisoft.MergeDice.Survival
     [CustomEditor(typeof(QuestSystem))]
     public class QuestSystemInspector : OdinEditor
     {
+        private static int debugDayToJump = 1;
+
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
@@ -20,6 +22,7 @@ namespace Ilumisoft.MergeDice.Survival
             {
                 EditorGUILayout.Space();
                 EditorGUILayout.LabelField("Runtime Quest Progress", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField("Current Day", $"{questSystem.Day}/{questSystem.TotalDays}");
                 
                 // Show quest title and description
                 EditorGUILayout.LabelField("Title", questSystem.CurrentQuestProgress.title);
@@ -94,6 +97,34 @@ namespace Ilumisoft.MergeDice.Survival
                 if (GUILayout.Button("Next Day"))
                 {
                     questSystem.NextDay();
+                }
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Day Debug", EditorStyles.boldLabel);
+                debugDayToJump = EditorGUILayout.IntSlider("Jump To Day", debugDayToJump, 1, Mathf.Max(1, questSystem.TotalDays));
+
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("Jump To Selected Day"))
+                {
+                    questSystem.DebugJumpToDay(debugDayToJump);
+
+                    var survivalUI = FindFirstObjectByType<SurvivalUI>();
+                    if (survivalUI != null)
+                    {
+                        survivalUI.ShowDayIntro();
+                    }
+                }
+
+                if (GUILayout.Button("Jump To Final Day"))
+                {
+                    questSystem.DebugJumpToDay(Mathf.Max(1, questSystem.TotalDays));
+
+                    var survivalUI = FindFirstObjectByType<SurvivalUI>();
+                    if (survivalUI != null)
+                    {
+                        survivalUI.ShowDayIntro();
+                    }
                 }
                 EditorGUILayout.EndHorizontal();
                 

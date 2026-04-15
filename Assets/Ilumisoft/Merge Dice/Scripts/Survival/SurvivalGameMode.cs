@@ -466,6 +466,19 @@ namespace Ilumisoft.MergeDice.Survival
             yield return null;
         }
 
+        public void TriggerFinalDayGameOver()
+        {
+            if (!gameRunning)
+            {
+                return;
+            }
+
+            questCompleted = false;
+            waitingForNextDay = false;
+            showingDayIntro = false;
+            StartCoroutine(EndGame());
+        }
+
         // Modify OnQuestCompleted to only set questCompleted = true and stop timer
         void OnQuestCompleted()
         {
@@ -589,20 +602,27 @@ namespace Ilumisoft.MergeDice.Survival
             // Get the actual maximum level from the dice system dynamically
             int actualMaxLevel = GetDynamicMaxLevel();
             int maxLevel = Mathf.Min(maxTileLevel, actualMaxLevel);
+            List<int> spawnableLevels = GetSpawnableLevels(maxLevel);
 
             if (enableDistributionDebug)
             {
-                Debug.Log($"GetStrategicLevel: distributionMode={distributionMode}, maxLevel={maxLevel} (actualMax={actualMaxLevel}, tileMax={maxTileLevel})");
+                Debug.Log($"GetStrategicLevel: distributionMode={distributionMode}, maxLevel={maxLevel} (actualMax={actualMaxLevel}, tileMax={maxTileLevel}, spawnableCount={spawnableLevels.Count})");
+            }
+
+            if (spawnableLevels.Count == 0)
+            {
+                Debug.LogWarning("No spawnable survival levels are available. Falling back to level 0.");
+                return 0;
             }
 
             return distributionMode switch
             {
-                TileDistributionMode.EvenDistribution => GetEvenDistributionLevel(maxLevel),
-                TileDistributionMode.LowLevelBias => GetLowLevelBiasLevel(maxLevel),
-                TileDistributionMode.WeightedCurve => GetWeightedCurveLevel(maxLevel),
-                TileDistributionMode.OnlyLowLevels => GetOnlyLowLevelsLevel(),
-                TileDistributionMode.BalancedRandom => GetBalancedRandomLevel(maxLevel),
-                _ => GetEvenDistributionLevel(maxLevel)
+                TileDistributionMode.EvenDistribution => GetEvenDistributionLevel(spawnableLevels),
+                TileDistributionMode.LowLevelBias => GetLowLevelBiasLevel(spawnableLevels),
+                TileDistributionMode.WeightedCurve => GetWeightedCurveLevel(spawnableLevels),
+                TileDistributionMode.OnlyLowLevels => GetOnlyLowLevelsLevel(spawnableLevels),
+                TileDistributionMode.BalancedRandom => GetBalancedRandomLevel(spawnableLevels),
+                _ => GetEvenDistributionLevel(spawnableLevels)
             };
         }
 
@@ -615,26 +635,69 @@ namespace Ilumisoft.MergeDice.Survival
             return GetStrategicLevel();
         }
 
-        private int GetEvenDistributionLevel(int maxLevel)
+        private List<int> GetSpawnableLevels(int maxLevel)
         {
-            // Equal probability for all levels from 0 to maxLevel
-            // Unity's Random.Range(int min, int max) is inclusive of min, exclusive of max
-            // So Random.Range(0, maxLevel + 1) gives us [0, maxLevel] inclusive
-            int level = Random.Range(0, maxLevel + 1);
+            List<int> levels = new List<int>();
+
+            for (int level = 0; level <= maxLevel; level++)
+            {
+                if (IsLevelAllowedForSpawn(level))
+                {
+                    levels.Add(level);
+                }
+            }
+
+            return levels;
+        }
+
+        private bool IsLevelAllowedForSpawn(int level)
+        {
+            if (survivalResources == null || survivalResources.AreMechanicsEnabled)
+            {
+                return true;
+            }
+
+            return level != foodDiceLevel && level != waterDiceLevel;
+        }
+
+        private int GetRandomLevelFromList(IReadOnlyList<int> levels)
+        {
+            return levels[Random.Range(0, levels.Count)];
+        }
+
+        private List<int> GetLevelsInRange(IReadOnlyList<int> levels, int minLevel, int maxLevel)
+        {
+            List<int> filteredLevels = new List<int>();
+
+            foreach (int level in levels)
+            {
+                if (level >= minLevel && level <= maxLevel)
+                {
+                    filteredLevels.Add(level);
+                }
+            }
+
+            return filteredLevels;
+        }
+
+        private int GetEvenDistributionLevel(IReadOnlyList<int> spawnableLevels)
+        {
+            int level = GetRandomLevelFromList(spawnableLevels);
             
             // Debug logging for troubleshooting
             if (enableDistributionDebug)
             {
-                Debug.Log($"EvenDistribution: maxLevel={maxLevel}, generated level={level}");
+                Debug.Log($"EvenDistribution: generated level={level}");
             }
             
             return level;
         }
 
-        private int GetLowLevelBiasLevel(int maxLevel)
+        private int GetLowLevelBiasLevel(IReadOnlyList<int> spawnableLevels)
         {
             // Original low-level bias logic
             float randomValue = Random.value;
+            List<int> lowLevels = GetLevelsInRange(spawnableLevels, 0, 1);
             
             if (enableDistributionDebug)
             {
@@ -644,7 +707,7 @@ namespace Ilumisoft.MergeDice.Survival
             if (randomValue < lowLevelBias)
             {
                 // Heavily favor levels 0-1 for easy combinations
-                int level = Random.Range(0, 2);
+                int level = GetRandomLevelFromList(lowLevels.Count > 0 ? lowLevels : spawnableLevels);
                 if (enableDistributionDebug)
                 {
                     Debug.Log($"GetLowLevelBiasLevel: Using low bias, generated level {level}");
@@ -654,81 +717,78 @@ namespace Ilumisoft.MergeDice.Survival
             else
             {
                 // Occasionally spawn higher levels
-                int level = Random.Range(0, maxLevel + 1);
+                int level = GetRandomLevelFromList(spawnableLevels);
                 if (enableDistributionDebug)
                 {
-                    Debug.Log($"GetLowLevelBiasLevel: Using high levels, generated level {level} (range 0-{maxLevel})");
+                    Debug.Log($"GetLowLevelBiasLevel: Using high levels, generated level {level}");
                 }
                 return level;
             }
         }
 
-        private int GetWeightedCurveLevel(int maxLevel)
+        private int GetWeightedCurveLevel(IReadOnlyList<int> spawnableLevels)
         {
-            // Use animation curve to determine probability
-            float randomValue = Random.value;
-            float normalizedPosition = 0f;
-            
-            // Find the level that corresponds to this random value using the curve
-            for (int level = 0; level <= maxLevel; level++)
+            float totalWeight = 0f;
+
+            foreach (int level in spawnableLevels)
             {
-                float normalizedLevel = (float)level / maxLevel;
-                float curveValue = distributionCurve.Evaluate(normalizedLevel);
-                normalizedPosition += curveValue;
-                
-                if (randomValue <= normalizedPosition / GetCurveTotalArea())
+                float normalizedLevel = spawnableLevels.Count == 1 ? 0f : (float)level / Mathf.Max(1, spawnableLevels[spawnableLevels.Count - 1]);
+                totalWeight += Mathf.Max(0f, distributionCurve.Evaluate(normalizedLevel));
+            }
+
+            if (totalWeight <= 0f)
+            {
+                return GetRandomLevelFromList(spawnableLevels);
+            }
+
+            float randomValue = Random.value * totalWeight;
+            float currentWeight = 0f;
+
+            foreach (int level in spawnableLevels)
+            {
+                float normalizedLevel = spawnableLevels.Count == 1 ? 0f : (float)level / Mathf.Max(1, spawnableLevels[spawnableLevels.Count - 1]);
+                currentWeight += Mathf.Max(0f, distributionCurve.Evaluate(normalizedLevel));
+
+                if (randomValue <= currentWeight)
                 {
                     return level;
                 }
             }
-            
-            return maxLevel; // Fallback
+
+            return spawnableLevels[spawnableLevels.Count - 1];
         }
 
-        private int GetOnlyLowLevelsLevel()
+        private int GetOnlyLowLevelsLevel(IReadOnlyList<int> spawnableLevels)
         {
-            // Only spawn levels 0 and 1
-            return Random.Range(0, 2);
+            List<int> lowLevels = GetLevelsInRange(spawnableLevels, 0, 1);
+            return GetRandomLevelFromList(lowLevels.Count > 0 ? lowLevels : spawnableLevels);
         }
 
-        private int GetBalancedRandomLevel(int maxLevel)
+        private int GetBalancedRandomLevel(IReadOnlyList<int> spawnableLevels)
         {
             // Slight preference for middle levels
             float randomValue = Random.value;
+            int maxSpawnableLevel = spawnableLevels[spawnableLevels.Count - 1];
+            List<int> lowLevels = GetLevelsInRange(spawnableLevels, 0, 1);
+            int midStart = Mathf.Max(1, maxSpawnableLevel / 3);
+            int midEnd = Mathf.Min(maxSpawnableLevel, (maxSpawnableLevel * 2) / 3);
+            int highStart = Mathf.Max(1, (maxSpawnableLevel * 2) / 3);
+
+            List<int> midLevels = GetLevelsInRange(spawnableLevels, midStart, midEnd);
+            List<int> highLevels = GetLevelsInRange(spawnableLevels, highStart, maxSpawnableLevel);
             
             if (randomValue < 0.3f)
             {
-                // 30% chance for low levels (0-1)
-                return Random.Range(0, Mathf.Min(2, maxLevel + 1));
+                return GetRandomLevelFromList(lowLevels.Count > 0 ? lowLevels : spawnableLevels);
             }
             else if (randomValue < 0.8f)
             {
-                // 50% chance for mid levels
-                int midStart = Mathf.Max(1, maxLevel / 3);
-                int midEnd = Mathf.Min(maxLevel, (maxLevel * 2) / 3);
-                return Random.Range(midStart, midEnd + 1);
+                return GetRandomLevelFromList(midLevels.Count > 0 ? midLevels : spawnableLevels);
             }
             else
             {
-                // 20% chance for higher levels
-                int highStart = Mathf.Max(1, (maxLevel * 2) / 3);
-                return Random.Range(highStart, maxLevel + 1);
+                return GetRandomLevelFromList(highLevels.Count > 0 ? highLevels : spawnableLevels);
             }
-        }
-
-        private float GetCurveTotalArea()
-        {
-            // Calculate the total area under the curve for proper normalization
-            float total = 0f;
-            int samples = 100;
-            
-            for (int i = 0; i < samples; i++)
-            {
-                float t = (float)i / samples;
-                total += distributionCurve.Evaluate(t);
-            }
-            
-            return total;
         }
 
         /// <summary>

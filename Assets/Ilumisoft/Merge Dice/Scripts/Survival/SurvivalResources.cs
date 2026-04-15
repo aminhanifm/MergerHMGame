@@ -7,6 +7,10 @@ namespace Ilumisoft.MergeDice.Survival
     [System.Serializable]
     public class SurvivalResources : MonoBehaviour
     {
+        [Header("Mechanics")]
+        [Tooltip("When disabled, food and water never decay and can no longer cause game over.")]
+        [SerializeField] private bool enableFoodAndWaterMechanics = false;
+
         [Header("Resource Configuration")]
         [BoxGroup("Food Settings")]
         [Range(1, 1000)]
@@ -52,7 +56,9 @@ namespace Ilumisoft.MergeDice.Survival
         
         [BoxGroup("Status")]
         [ShowInInspector, ReadOnly]
-        public bool IsResourcesDepleted => CurrentFood <= 0 || CurrentWater <= 0;
+        public bool IsResourcesDepleted => enableFoodAndWaterMechanics && (CurrentFood <= 0 || CurrentWater <= 0);
+
+        public bool AreMechanicsEnabled => enableFoodAndWaterMechanics;
         
         [BoxGroup("Debug")]
         [Button("Add Food")]
@@ -99,7 +105,7 @@ namespace Ilumisoft.MergeDice.Survival
 
         public void StartResourceDecay()
         {
-            isRunning = true;
+            isRunning = enableFoodAndWaterMechanics;
         }
 
         public void StopResourceDecay()
@@ -116,7 +122,7 @@ namespace Ilumisoft.MergeDice.Survival
 
         private void Update()
         {
-            if (!isRunning) return;
+            if (!enableFoodAndWaterMechanics || !isRunning) return;
 
             // Decay resources over time
             CurrentFood -= foodDecayRate * Time.deltaTime;
@@ -139,6 +145,8 @@ namespace Ilumisoft.MergeDice.Survival
 
         public void AddFood(float amount)
         {
+            if (!enableFoodAndWaterMechanics) return;
+
             float oldFood = CurrentFood;
             CurrentFood = Mathf.Min(maxFood, CurrentFood + amount);
             float actualAdded = CurrentFood - oldFood;
@@ -153,6 +161,8 @@ namespace Ilumisoft.MergeDice.Survival
 
         public void AddWater(float amount)
         {
+            if (!enableFoodAndWaterMechanics) return;
+
             float oldWater = CurrentWater;
             CurrentWater = Mathf.Min(maxWater, CurrentWater + amount);
             float actualAdded = CurrentWater - oldWater;
@@ -170,6 +180,8 @@ namespace Ilumisoft.MergeDice.Survival
         /// </summary>
         public void OnFoodDiceMerged(int diceLevel, int mergeCount = 1)
         {
+            if (!enableFoodAndWaterMechanics) return;
+
             float foodGained = foodPerDice * mergeCount;
             AddFood(foodGained);
         }
@@ -179,6 +191,8 @@ namespace Ilumisoft.MergeDice.Survival
         /// </summary>
         public void OnWaterDiceMerged(int diceLevel, int mergeCount = 1)
         {
+            if (!enableFoodAndWaterMechanics) return;
+
             float waterGained = waterPerDice * mergeCount;
             AddWater(waterGained);
         }

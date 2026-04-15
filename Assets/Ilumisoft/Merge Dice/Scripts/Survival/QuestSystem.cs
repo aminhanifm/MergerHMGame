@@ -103,6 +103,7 @@ namespace Ilumisoft.MergeDice.Survival
         public QuestData CurrentQuestData { get; private set; }
         public QuestProgress CurrentQuestProgress { get; private set; }
         public int Day { get; private set; } = 1;
+        public int TotalDays => GetConfiguredQuestCount();
 
         public event Action<Quest> OnQuestChanged;
         public event Action OnQuestCompleted;
@@ -205,7 +206,7 @@ namespace Ilumisoft.MergeDice.Survival
             
             if (CurrentQuest == null)
             {
-                OnAllQuestsCompleted?.Invoke();
+                TriggerAllQuestsCompleted();
                 return;
             }
             
@@ -306,6 +307,32 @@ namespace Ilumisoft.MergeDice.Survival
             StartNewDay();
         }
 
+        public void TriggerAllQuestsCompleted()
+        {
+            if (AllQuestsCompleted)
+            {
+                return;
+            }
+
+            OnAllQuestsCompleted?.Invoke();
+        }
+
+        public void DebugJumpToDay(int targetDay)
+        {
+            int totalDays = TotalDays;
+
+            if (totalDays <= 0)
+            {
+                Debug.LogWarning("DebugJumpToDay failed: no quests are configured.");
+                return;
+            }
+
+            Day = Mathf.Clamp(targetDay, 1, totalDays);
+            AllQuestsCompleted = false;
+            StartNewDay();
+            Debug.Log($"Debug: Jumped to day {Day}/{totalDays}");
+        }
+
         public void ResetCurrentQuestProgress()
         {
             if (CurrentQuest == null || CurrentQuestProgress == null)
@@ -362,6 +389,27 @@ namespace Ilumisoft.MergeDice.Survival
         public void ResetDay()
         {
             Day = 1;
+            AllQuestsCompleted = false;
+        }
+
+        private int GetConfiguredQuestCount()
+        {
+            if (questDatabase?.quests == null)
+            {
+                return 0;
+            }
+
+            int count = 0;
+
+            foreach (QuestData quest in questDatabase.quests)
+            {
+                if (quest != null)
+                {
+                    count++;
+                }
+            }
+
+            return count;
         }
 
         // You can edit this method to customize quests per day

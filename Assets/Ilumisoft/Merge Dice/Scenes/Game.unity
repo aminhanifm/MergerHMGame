@@ -733,7 +733,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 48, y: -192.9}
+  m_AnchoredPosition: {x: 54.517, y: -219.65}
   m_SizeDelta: {x: 148.0348, y: 104.4574}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &142303774
@@ -810,7 +810,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 2.498993}
-  m_SizeDelta: {x: 32.000004, y: -5}
+  m_SizeDelta: {x: 0, y: -5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &160306117
 MonoBehaviour:
@@ -1235,7 +1235,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 85}
+  m_SizeDelta: {x: -310, y: 85}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &215699594
 MonoBehaviour:
@@ -1778,6 +1778,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 459ee3600782fce4e8754f37afd08ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enableFoodAndWaterMechanics: 0
   maxFood: 100
   foodDecayRate: 0.5
   foodPerDice: 5
@@ -3302,6 +3303,7 @@ MonoBehaviour:
   questTitleText: {fileID: 2081327434}
   questDescText: {fileID: 451937370}
   questProgressText: {fileID: 1510882317}
+  survivalResourcesGroup: {fileID: 890991546}
   foodSlider: {fileID: 614934968}
   foodText: {fileID: 1396473589}
   waterSlider: {fileID: 1859431516}
@@ -3508,8 +3510,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 427, y: -61.8075}
-  m_SizeDelta: {x: 834, y: 36.385002}
+  m_AnchoredPosition: {x: 277, y: -61.8075}
+  m_SizeDelta: {x: 534, y: 36.385002}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &846109331
 MonoBehaviour:
@@ -4498,7 +4500,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -112, y: -68.5}
+  m_AnchoredPosition: {x: -112, y: -79}
   m_SizeDelta: {x: 125, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1178452140
@@ -5058,7 +5060,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: -25, y: 25}
-  m_SizeDelta: {x: 149.4799, y: 80}
+  m_SizeDelta: {x: 117.7698, y: 80}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1229132310
 MonoBehaviour:
@@ -5770,7 +5772,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: -25, y: 25}
-  m_SizeDelta: {x: 173, y: 80}
+  m_SizeDelta: {x: 117.7698, y: 80}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1451035277
 MonoBehaviour:
@@ -5889,8 +5891,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 427, y: -24.307499}
-  m_SizeDelta: {x: 834, y: 38.614998}
+  m_AnchoredPosition: {x: 277, y: -24.307499}
+  m_SizeDelta: {x: 534, y: 38.614998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1468812924
 MonoBehaviour:
@@ -7561,7 +7563,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -396, y: 9.99999}
+  m_SizeDelta: {x: -310, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1906518844
 GameObject:
